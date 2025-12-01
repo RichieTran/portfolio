@@ -1,0 +1,26 @@
+* {
+    display: grid;
+    cursor: url('images/cursor.png'), auto;
+}
+
+
+body {
+    
+}
+
+h1 {
+    width: fit-content;
+}
+
+h1:hover {
+    color: gray;
+    transition: color 0.2s ease;
+    transform: translateY(-2px);
+    transition: .3s ease all;
+    cursor: url('images/hoverCursor.png'), auto;
+}
+
+#snoopy {
+    width: 1000px;
+    height: 500px;
+}
