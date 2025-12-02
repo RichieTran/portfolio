@@ -1,11 +1,9 @@
 * {
-    display: grid;
     cursor: url('images/cursor.png'), auto;
+    background-color: #01ADAD;
 }
 
-
 body {
-    
 }
 
 h1 {
@@ -14,9 +12,8 @@ h1 {
 
 h1:hover {
     color: gray;
-    transition: color 0.2s ease;
     transform: translateY(-2px);
-    transition: .3s ease all;
+    transition: .3s ease all color .2s ease;;
     cursor: url('images/hoverCursor.png'), auto;
 }
 
