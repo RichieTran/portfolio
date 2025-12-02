@@ -1,13 +1,18 @@
 * {
     margin: 0;
     padding: 0;
-    cursor: url('images/cursor.png'), auto;
     background-color: #01ADAD;
+}
+
+@font-face {
+    font-family: "W95";
+    src: url("fonts/w95fa.woff") format("woff");
 }
 
 body {
     height: 100vh;
     width: 100vw;
+    cursor: url('images/cursor.png'), auto;
     overflow: hidden;
     display: grid;
     grid-template-rows: 94vh 6vh;
@@ -31,15 +36,21 @@ footer {
 }
 
 .app {
+    font-family: "W95";
     grid-column: 1;
     grid-row: 1;
+    padding: 5px;
     align-self: center;
     justify-self: center;
 }
 
+.app p{
+    text-align: center;
+    margin-top: 0px;
+    font-size: 14px;
+    color: black;
+}
+
 .app:hover {
-    color: gray;
-    transform: translateY(-2px);
-    transition: .3s ease all color .2s ease;
     cursor: url('images/hoverCursor.png'), auto;
 }
