@@ -1,5 +1,13 @@
-let lastClicked = null;
+function updateTime() {
+    const time = document.getElementById("currentTime");
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    time.textContent = timeString;
+}
+updateTime();
+setInterval(updateTime, 60000);
 
+let lastClicked = null;
 document.addEventListener('DOMContentLoaded', function(){
     const apps = document.querySelectorAll('.app');
     const appGrid = document.querySelector('.appGrid');
