@@ -8,7 +8,17 @@ updateTime();
 setInterval(updateTime, 60000);
 
 let lastClicked = null;
+let muted = false;
 document.addEventListener('DOMContentLoaded', function(){
+    document.querySelector('.speaker').addEventListener('click', function(element){
+        muted = !muted;
+        if(muted){
+            document.querySelector('.speaker').classList.add('muted');
+        } else {
+            document.querySelector('.speaker').classList.remove('muted');
+        }
+    });
+
     const apps = document.querySelectorAll('.app');
     const appGrid = document.querySelector('.appGrid');
     
