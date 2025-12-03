@@ -41,6 +41,8 @@ footer {
     grid-row: 4 / span 2;
     align-self: center;
     justify-self: center;
+    position: fixed;
+    user-select: none;
 }
 
 .app {
@@ -48,6 +50,7 @@ footer {
     padding: 5px;
     align-self: center;
     justify-self: center;
+    user-select: none;
 }
 
 .app p{
