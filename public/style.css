@@ -33,12 +33,11 @@ footer {
     display: grid;
     grid-template-rows: repeat(8, 11.75vh);
     grid-template-columns: repeat(10, 10vw);
+    grid-auto-flow: column;
 }
 
 .app {
     font-family: "W95";
-    grid-column: 1;
-    grid-row: 1;
     padding: 5px;
     align-self: center;
     justify-self: center;
@@ -53,4 +52,13 @@ footer {
 
 .app:hover {
     cursor: url('images/hoverCursor.png'), auto;
+}
+
+.app.selected {
+    filter: sepia(100%) hue-rotate(190deg) saturate(400%) brightness(80%);
+    border: dotted 2px #ffffff;
+}
+
+.app.opened {
+    
 }
