@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    background-color: #01ADAD;
+    
 }
 
 @font-face {
@@ -34,6 +34,14 @@ footer {
 
 .time {
     grid-column: -2;
+    align-self: center;
+    justify-self: center;
+    padding: 15px;
+    background-color: #BDBBBD;
+    border-right: 2px solid #f2f2f2;
+    border-bottom: 2px solid #f2f2f2;
+    border-left: 2px solid #8F8F8F;
+    border-top: 2px solid #8F8F8F;
 }
 
 .appGrid {
@@ -44,6 +52,7 @@ footer {
     grid-template-rows: repeat(8, 11.75vh);
     grid-template-columns: repeat(10, 10vw);
     grid-auto-flow: column;
+    background-color: #01ADAD;
 }
 
 .backgroundImg{
