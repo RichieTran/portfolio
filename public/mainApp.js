@@ -4,8 +4,18 @@ function updateTime() {
     const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
     time.textContent = timeString;
 }
-updateTime();
-setInterval(updateTime, 60000);
+if(new Date().getSeconds() === 0){
+    updateTime();
+    setInterval(updateTime, 60000);
+}
+else{
+    updateTime();
+    const delay = (60 - new Date().getSeconds()) * 1000;
+    setTimeout(function(){
+        updateTime();
+        setInterval(updateTime, 60000);
+    }, delay);
+}
 
 let lastClicked = null;
 let muted = false;
