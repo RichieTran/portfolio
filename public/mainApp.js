@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 win.style.left = randomX + 'px';
                 win.style.top = randomY + 'px';
 
-                win.innerHTML = '<header>' + app.id + '<close></close></header>' + '<content></content>';
+                win.innerHTML = '<header id=windowHeader>' + app.id + '<close></close></header>' + '<content></content>';
 
                 document.body.appendChild(win);
                 app.classList.add('opened');
@@ -85,6 +85,8 @@ document.addEventListener('DOMContentLoaded', function(){
                     lastOpened.classList.add('background');
                 }
                 lastOpened = win;
+
+                dragElement(win);
             }
             else if(document.getElementById(app.id + "Window").classList.contains('background')){
                 const win = document.getElementById(app.id + "Window");
@@ -109,4 +111,49 @@ document.addEventListener('DOMContentLoaded', function(){
             zLevel += 1;
         }
     });
+
+    document.body.addEventListener('mousedown', function(element){
+        const window = element.target.closest('.window');
+        if(window && window.classList.contains('background')){
+            lastOpened.classList.add('background');
+            window.classList.remove('background');
+            lastOpened = window;
+            window.style.zIndex = zLevel;
+            zLevel += 1;
+        }
+    });
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        var header = elmnt.querySelector('header');
+
+        if (header) {
+            header.onmousedown = dragMouseDown;
+        } else {
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
 });

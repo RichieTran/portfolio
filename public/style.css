@@ -136,7 +136,7 @@ footer {
 }
 
 .window {
-    position: fixed;
+    position: absolute;
     box-sizing: border-box;
     background-color: #BDBBBD;
     border-top: 2px solid #F2F2F2;
@@ -152,7 +152,7 @@ footer {
     grid-template-rows: 35px auto;
 }
 
-.window header {
+.window #windowHeader {
     grid-row: 1;
     background-color: #000080;
     color: white;
@@ -163,7 +163,7 @@ footer {
     cursor: url('images/dragCursor.png'), auto;
 }
 
-.window.background header{
+.window.background #windowHeader{
     background-color: #8F8F8F;
 }
 
