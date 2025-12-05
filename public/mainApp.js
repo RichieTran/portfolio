@@ -30,18 +30,44 @@ document.addEventListener('DOMContentLoaded', function(){
     apps.forEach(function(app){
         app.addEventListener('click', function(element){
             element.stopPropagation();
-            
             if(!lastClicked){
                 app.classList.add('selected');
                 lastClicked = app;
+                if(element.originalEvent.detail > 1){
+                    return;
+                }
             }
-            else if(lastClicked != app){
+            else if(lastClicked !== app){
                 lastClicked.classList.remove('selected');
                 app.classList.add('selected');
                 lastClicked = app;
+                if(element.originalEvent.detail > 1){
+                    return;
+                }
             }
-            else{
-                lastClicked.classList.add('opened');
+        });
+        
+        app.addEventListener('dblclick', function(element){
+            element.stopPropagation();
+            if(!app.classList.contains('opened')){
+                const win = document.createElement('span');
+                win.id = app.id + "Window";
+                win.className = "window";
+
+                const maxX = Math.max(0, window.innerWidth - 800);
+                const maxY = Math.max(0, window.innerHeight - 500);
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
+                
+                win.style.width = '800px';
+                win.style.height = '500px';
+                win.style.left = randomX + 'px';
+                win.style.top = randomY + 'px';
+                
+                win.innerHTML = '<header>' + app.id + '<close></close>' + '</header>' + '<p>Window content</p>';
+                
+                document.body.appendChild(win);
+                app.classList.add('opened');
             }
         });
     });
