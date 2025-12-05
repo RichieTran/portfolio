@@ -13,7 +13,10 @@ setTimeout(function(){
 }, delay);
 
 let lastClicked = null;
+let lastOpened = null;
 let muted = false;
+let zLevel = 0;
+
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelector('.speaker').addEventListener('click', function(element){
         muted = !muted;
@@ -24,16 +27,16 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     });
 
-    const apps = document.querySelectorAll('.app');
     const appGrid = document.querySelector('.appGrid');
-    
-    apps.forEach(function(app){
-        app.addEventListener('click', function(element){
+
+    appGrid.addEventListener('click', function(element){
+        const app = element.target.closest('.app');
+        if(app){
             element.stopPropagation();
             if(!lastClicked){
                 app.classList.add('selected');
                 lastClicked = app;
-                if(element.originalEvent.detail > 1){
+                if(element.detail > 1){
                     return;
                 }
             }
@@ -41,13 +44,20 @@ document.addEventListener('DOMContentLoaded', function(){
                 lastClicked.classList.remove('selected');
                 app.classList.add('selected');
                 lastClicked = app;
-                if(element.originalEvent.detail > 1){
+                if(element.detail > 1){
                     return;
                 }
             }
-        });
-        
-        app.addEventListener('dblclick', function(element){
+        }
+        else if(lastClicked){
+            lastClicked.classList.remove('selected');
+            lastClicked = null;
+        }
+    });
+
+    appGrid.addEventListener('dblclick', function(element){
+        const app = element.target.closest('.app');
+        if(app){
             element.stopPropagation();
             if(!app.classList.contains('opened')){
                 const win = document.createElement('span');
@@ -58,24 +68,45 @@ document.addEventListener('DOMContentLoaded', function(){
                 const maxY = Math.max(0, window.innerHeight - 500);
                 const randomX = Math.floor(Math.random() * maxX);
                 const randomY = Math.floor(Math.random() * maxY);
-                
+
                 win.style.width = '800px';
                 win.style.height = '500px';
                 win.style.left = randomX + 'px';
                 win.style.top = randomY + 'px';
-                
-                win.innerHTML = '<header>' + app.id + '<close></close>' + '</header>' + '<p>Window content</p>';
-                
+
+                win.innerHTML = '<header>' + app.id + '<close></close></header>' + '<content></content>';
+
                 document.body.appendChild(win);
                 app.classList.add('opened');
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+
+                if (lastOpened){
+                    lastOpened.classList.add('background');
+                }
+                lastOpened = win;
             }
-        });
+            else if(document.getElementById(app.id + "Window").classList.contains('background')){
+                const win = document.getElementById(app.id + "Window");
+                lastOpened.classList.add('background');
+                win.classList.remove('background');
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+                lastOpened = win;
+            }
+        }
     });
 
-    appGrid.addEventListener('click', function(element){
-        if(lastClicked){
-            lastClicked.classList.remove('selected');
-            lastClicked = null
+    document.body.addEventListener('click', function(element){
+        const clickedWindow = element.target.closest('.window');
+        if(clickedWindow && clickedWindow !== lastOpened){
+            if(lastOpened){
+                lastOpened.classList.add('background');
+            }
+            clickedWindow.classList.remove('background');
+            lastOpened = clickedWindow;
+            clickedWindow.style.zIndex = zLevel;
+            zLevel += 1;
         }
     });
 });
