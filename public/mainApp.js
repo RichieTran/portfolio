@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 win.style.left = randomX + 'px';
                 win.style.top = randomY + 'px';
 
-                win.innerHTML = '<header id=windowHeader>' + app.id + '<close></close></header>' + '<content></content>';
+                win.innerHTML = '<header id=windowHeader><icon>' + document.getElementById(app.id + "Img").outerHTML + '</icon><p>' + app.id + '</p><close></close></header>' + '<content></content>';
 
                 document.body.appendChild(win);
                 app.classList.add('opened');
@@ -87,6 +87,16 @@ document.addEventListener('DOMContentLoaded', function(){
                 lastOpened = win;
 
                 dragElement(win);
+
+                const closeBtn = win.querySelector('close');
+                closeBtn.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    win.remove();
+                    app.classList.remove('opened');
+                    if(lastOpened === win){
+                        lastOpened = null;
+                    }
+                });
             }
             else if(document.getElementById(app.id + "Window").classList.contains('background')){
                 const win = document.getElementById(app.id + "Window");
@@ -127,22 +137,15 @@ document.addEventListener('DOMContentLoaded', function(){
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
         var header = elmnt.querySelector('header');
 
-        if (header) {
-            header.onmousedown = dragMouseDown;
-        } else {
-            elmnt.onmousedown = dragMouseDown;
-        }
-
         function dragMouseDown(e) {
             e.preventDefault();
             pos3 = e.clientX;
             pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            document.onmousemove = elementDrag;
+            document.addEventListener('mouseup', closeDragElement);
+            document.addEventListener('mousemove', elementDrag);
         }
 
         function elementDrag(e) {
-            e.preventDefault();
             pos1 = pos3 - e.clientX;
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
@@ -152,8 +155,14 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         function closeDragElement() {
-            document.onmouseup = null;
-            document.onmousemove = null;
+            document.removeEventListener('mouseup', closeDragElement);
+            document.removeEventListener('mousemove', elementDrag);
+        }
+
+        if (header) {
+            header.addEventListener('mousedown', dragMouseDown);
+        } else {
+            elmnt.addEventListener('mousedown', dragMouseDown);
         }
     }
 });
