@@ -370,3 +370,32 @@ footer {
     cursor: url('images/hoverCursor.png'), auto;
     margin-top: -4px;
 }
+
+.resetBtn{
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    height: 40px;
+    width: 120px;
+    font-family: "W95";
+    font-size: 18px;
+    cursor: url('images/hoverCursor.png'), auto;
+    margin-top: -4px;
+}
+
+.successContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 115px;
+}
+
+#Email\ Me\!Window content p{
+    font-size: 24px;
+    text-align: center;
+    padding: 50px;
+    font-family: "W95";
+}

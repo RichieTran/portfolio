@@ -116,7 +116,58 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 if(app.id === "Email Me!"){
                     const content = win.querySelector('content');
-                    content.innerHTML = '<form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" rows="21" required></textarea></div><button type="submit" class="sendBtn">Send</button></form>';
+
+                    function setupEmailForm(){
+                        content.innerHTML = '<form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST"><input type="text" name="_honey" style="display: none;"><input type="hidden" name="_captcha" value="false"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" rows="21" required></textarea></div><button type="submit" class="sendBtn">Send</button><p class="formStatus"></p></form>';
+
+                        const form = content.querySelector('#emailForm');
+                        const statusMsg = content.querySelector('.formStatus');
+
+                        form.addEventListener('submit', function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            const formData = new FormData(form);
+
+                            fetch(form.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'Accept': 'application/json'
+                                }
+                            })
+                            .then(response => {
+                                if(response.ok){
+                                    content.innerHTML = '<div class="successContainer"><p style="color:green;">Successfully sent message! I will get back to you as soon as possible!</p><button class="resetBtn">Send Another</button></div>';
+
+                                    const resetBtn = content.querySelector('.resetBtn');
+                                    resetBtn.addEventListener('click', function(e){
+                                        e.stopPropagation();
+                                        setupEmailForm();
+                                    });
+                                } else {
+                                    content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn">Send Another</button></div>';
+
+                                    const resetBtn = content.querySelector('.resetBtn');
+                                    resetBtn.addEventListener('click', function(e){
+                                        e.stopPropagation();
+                                        setupEmailForm();
+                                    });
+                                }
+                            })
+                            .catch(() => {
+                                content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn">Send Another</button></div>';
+
+                                const resetBtn = content.querySelector('.resetBtn');
+                                resetBtn.addEventListener('click', function(e){
+                                    e.stopPropagation();
+                                    setupEmailForm();
+                                });
+                            });
+                        });
+                    }
+
+                    setupEmailForm();
                 }
 
                 document.body.appendChild(win);
