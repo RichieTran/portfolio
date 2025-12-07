@@ -151,6 +151,7 @@ footer {
     grid-row: 1;
     background-color: #000080;
     color: white;
+    font-size: 18px;
     margin: 3px;
     display: grid;
     grid-template-columns: 35px auto 30px;
@@ -203,4 +204,106 @@ footer {
 .window content {
     grid-row: 2;
     margin: 3px;
+}
+
+#SocialsWindow content{
+    display: grid;
+    grid-template-columns: auto 100px 500px auto;
+    grid-template-rows: auto 130px 130px 130px auto;
+    align-items: center;
+    justify-items: center;
+}
+
+.socialBtn{
+    grid-row: 2;
+    width: 100px;
+    height: 100px;
+    background-color: #bdbbbd;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    font-family: "W95";
+    font-size: 12px;
+    cursor: url('images/hoverCursor.png'), auto;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-right: 40px;
+}
+
+.socialBtn p{
+    grid-column: 3;
+}
+
+.socialBtn#github{
+    grid-column: 2;
+    grid-row: 2;
+    background-image: url("images/GitHubLogo.png");
+}
+
+.window content #githubDesc{
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: left;
+}
+
+.socialBtn#linkedin{
+    grid-column: 2;
+    grid-row: 3;
+    background-image: url("images/LinkedInLogo.png");
+}
+
+.window content #linkedInDesc{
+    grid-column: 3;
+    grid-row: 3;
+    justify-self: left;
+}
+
+.socialBtn#email{
+    grid-column: 2;
+    grid-row: 4;
+    background-image: url("images/GmailLogo.png");
+}
+
+.window content #emailDesc{
+    grid-column: 3;
+    grid-row: 4;
+    justify-self: left;
+}
+
+#ResumeWindow content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.resumeContainer{
+    position: relative;
+    display: inline-block;
+}
+
+.resumeBtn{
+    position: absolute;
+    top: 10px;
+    padding: 5px 10px;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    font-family: "W95";
+    font-size: 16px;
+    cursor: url('images/hoverCursor.png'), auto;
+}
+
+#downloadBtn{
+    left: 10px;
+}
+
+#newTabBtn{
+    right: 10px;
+}
+
+#toolbar{
+    display: none;
 }

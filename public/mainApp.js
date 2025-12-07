@@ -76,6 +76,44 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 win.innerHTML = '<header id=windowHeader><icon>' + document.getElementById(app.id + "Img").outerHTML + '</icon><p>' + app.id + '</p><close></close></header>' + '<content></content>';
 
+                if(app.id === "Socials"){
+                    const content = win.querySelector('content');
+                    content.innerHTML = '<button class="socialBtn" id="github"></button><p id="githubDesc">Click the button to go to my GitHub or find me by my username RichieTran!</p><button class="socialBtn" id="linkedin"></button><p id="linkedInDesc">Click the button to go to my Linked In or find me by my username richiettran!</p><button class="socialBtn" id="email"></button><p id="emailDesc">Click the button to email me or find me by my email richietran2024@gmail.com!</p>';
+                    document.body.addEventListener('click', function(element){
+                        const button = element.target.closest('.socialBtn');
+                        if(button && button.id == "github"){
+                            window.open("https://github.com/RichieTran")
+                        }
+                        else if(button && button.id == "linkedin"){
+                            window.open("https://www.linkedin.com/in/richiettran/")
+                        }
+                        else if(button && button.id == "email"){
+                            window.open("mailto:richietran2024@gmail.com")
+                        }
+                    })
+                }
+
+                if(app.id === "Resume"){
+                    const content = win.querySelector('content');
+                    content.innerHTML = '<div class="resumeContainer"><button class="resumeBtn" id="downloadBtn">Download</button><button class="resumeBtn" id="newTabBtn">New Tab</button><iframe src="images/Resume.pdf#toolbar=0" height="440" width="775" title="resume"></iframe></div>';
+
+                    const downloadBtn = content.querySelector('#downloadBtn');
+                    const newTabBtn = content.querySelector('#newTabBtn');
+
+                    downloadBtn.addEventListener('click', function(e){
+                        e.stopPropagation();
+                        const link = document.createElement('a');
+                        link.href = 'images/Resume.pdf';
+                        link.download = 'Resume.pdf';
+                        link.click();
+                    });
+
+                    newTabBtn.addEventListener('click', function(e){
+                        e.stopPropagation();
+                        window.open('images/Resume.pdf', '_blank');
+                    });
+                }
+
                 document.body.appendChild(win);
                 app.classList.add('opened');
                 win.style.zIndex = zLevel;
