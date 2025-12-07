@@ -114,6 +114,11 @@ document.addEventListener('DOMContentLoaded', function(){
                     });
                 }
 
+                if(app.id === "Email Me!"){
+                    const content = win.querySelector('content');
+                    content.innerHTML = '<form id="emailForm"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" rows="21" required></textarea></div><button type="submit" class="sendBtn">Send</button></form>';
+                }
+
                 document.body.appendChild(win);
                 app.classList.add('opened');
                 win.style.zIndex = zLevel;

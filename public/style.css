@@ -307,3 +307,66 @@ footer {
 #toolbar{
     display: none;
 }
+
+#emailForm{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    font-family: "W95";
+}
+
+.formRow{
+    display: flex;
+    gap: 15px;
+}
+
+.formGroup{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.formGroup:has(#senderName){
+    flex: 0.5;
+}
+
+.formGroup:has(#senderEmail){
+    flex: 1;
+}
+
+.formGroup label{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.formGroup input,
+.formGroup textarea{
+    padding: 5px;
+    font-family: "W95";
+    font-size: 14px;
+    background-color: white;
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    border-bottom: 2px solid #F2F2F2;
+    border-right: 2px solid #F2F2F2;
+}
+
+.formGroup textarea{
+    resize: vertical;
+}
+
+.sendBtn{
+    align-self: center;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    height: 40px;
+    width: 120px;
+    font-family: "W95";
+    font-size: 18px;
+    cursor: url('images/hoverCursor.png'), auto;
+    margin-top: -4px;
+}
