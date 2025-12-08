@@ -76,6 +76,13 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 win.innerHTML = '<header id=windowHeader><icon>' + document.getElementById(app.id + "Img").outerHTML + '</icon><p>' + app.id + '</p><close></close></header>' + '<content></content>';
 
+                if(app.id === "About Me"){
+                    win.style.width = '400px';
+                    win.style.height = '500px'
+                    const content = win.querySelector('content');
+                    content.innerHTML = '<img id="Richie" src="images/Richie.jpg" alt="Richie"><p id="RichieDescription">Hi, I\'m Richie! I\'m currently an undergrad at Carnegie Mellon University studying computer science with a concentration in machine learning.  I\'m passionate about building technology that makes a real difference, especially tools that improve accessibility and serve communities.</p>'
+                }
+
                 if(app.id === "Socials"){
                     const content = win.querySelector('content');
                     content.innerHTML = '<button class="socialBtn" id="github"></button><p id="githubDesc">Click the button to go to my GitHub or find me by my username RichieTran!</p><button class="socialBtn" id="linkedin"></button><p id="linkedInDesc">Click the button to go to my Linked In or find me by my username richiettran!</p><button class="socialBtn" id="email"></button><p id="emailDesc">Click the button to email me or find me by my email richietran2024@gmail.com!</p>';
@@ -118,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     const content = win.querySelector('content');
 
                     function setupEmailForm(){
-                        content.innerHTML = '<form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST"><input type="text" name="_honey" style="display: none;"><input type="hidden" name="_captcha" value="false"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" rows="21" required></textarea></div><button type="submit" class="sendBtn">Send</button><p class="formStatus"></p></form>';
+                        content.innerHTML = '<form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST"><input type="text" name="_honey" style="display: none;"><input type="hidden" name="_captcha" value="false"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" placeholder="John Doe" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" placeholder="johndoe123@gmail.com" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" placeholder="Your message here!" rows="21" required></textarea></div><button type="submit" class="sendBtn">Send</button><p class="formStatus"></p></form>';
 
                         const form = content.querySelector('#emailForm');
                         const statusMsg = content.querySelector('.formStatus');
