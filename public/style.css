@@ -27,7 +27,7 @@ footer {
     grid-column: 1;
     grid-row: 3;
     display: grid;
-    grid-template-columns: 4px 90px 1fr 83fr 1fr 110px 4px;
+    grid-template-columns: 4px 90px 1fr repeat(10, 10fr) 1fr 110px 4px;
     background-color: #BDBBBD;
     border-top: 2px solid #f2f2f2;
     font-size: 14px;
@@ -77,13 +77,15 @@ footer {
     height: 35px;
     margin-top: 0;
     margin-bottom: 0;
-    grid-column: 6;
+    padding-right: 2px;
+    grid-column: 15;
     font-size: 18px;
     background-color: #BDBBBD;
     border-right: 2px solid #f2f2f2;
     border-bottom: 2px solid #f2f2f2;
     border-left: 2px solid #8F8F8F;
     border-top: 2px solid #8F8F8F;
+    white-space: nowrap;
 }
 
 .clock {
@@ -102,7 +104,7 @@ footer {
     background-repeat: no-repeat;
     margin-top: 0;
     margin-bottom: 0;
-    margin-right: 10px;
+    margin-right: 6px;
     height: 26px;
     width: 26px;
     cursor: url('images/hoverCursor.png'), auto;
