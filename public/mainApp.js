@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 if(app.id === "Socials"){
                     const content = win.querySelector('content');
-                    content.innerHTML = '<button class="socialBtn" id="github"></button><p id="githubDesc">Click the button to go to my GitHub or find me by my username RichieTran!</p><button class="socialBtn" id="linkedin"></button><p id="linkedInDesc">Click the button to go to my Linked In or find me by my username richiettran!</p><button class="socialBtn" id="email"></button><p id="emailDesc">Click the button to email me or find me by my email richietran2024@gmail.com!</p>';
+                    content.innerHTML = '<button class="socialBtn button" id="github"></button><p id="githubDesc">Click the button to go to my GitHub or find me by my username RichieTran!</p><button class="socialBtn button" id="linkedin"></button><p id="linkedInDesc">Click the button to go to my Linked In or find me by my username richiettran!</p><button class="socialBtn button" id="email"></button><p id="emailDesc">Click the button to email me or find me by my email richietran2024@gmail.com!</p>';
                     document.body.addEventListener('click', function(element){
                         const button = element.target.closest('.socialBtn');
                         if(button && button.id == "github"){
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 if(app.id === "Resume"){
                     const content = win.querySelector('content');
-                    content.innerHTML = '<div class="resumeContainer"><button class="resumeBtn" id="downloadBtn">Download</button><button class="resumeBtn" id="newTabBtn">New Tab</button><iframe src="images/Resume.pdf#toolbar=0" height="440" width="775" title="resume"></iframe></div>';
+                    content.innerHTML = '<div class="resumeContainer"><button class="resumeBtn button" id="downloadBtn">Download</button><button class="resumeBtn button" id="newTabBtn">New Tab</button><iframe src="images/Resume.pdf#toolbar=0" height="440" width="775" title="resume"></iframe></div>';
 
                     const downloadBtn = content.querySelector('#downloadBtn');
                     const newTabBtn = content.querySelector('#newTabBtn');
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     const content = win.querySelector('content');
 
                     function setupEmailForm(){
-                        content.innerHTML = '<form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST"><input type="text" name="_honey" style="display: none;"><input type="hidden" name="_captcha" value="false"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" placeholder="John Doe" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" placeholder="johndoe123@gmail.com" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" placeholder="Your message here!" rows="21" required></textarea></div><button type="submit" class="sendBtn">Send</button><p class="formStatus"></p></form>';
+                        content.innerHTML = '<form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST"><input type="text" name="_honey" style="display: none;"><input type="hidden" name="_captcha" value="false"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" placeholder="John Doe" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" placeholder="johndoe123@gmail.com" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" placeholder="Your message here!" rows="21" required></textarea></div><button type="submit" class="sendBtn button">Send</button><p class="formStatus"></p></form>';
 
                         const form = content.querySelector('#emailForm');
                         const statusMsg = content.querySelector('.formStatus');
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function(){
                             })
                             .then(response => {
                                 if(response.ok){
-                                    content.innerHTML = '<div class="successContainer"><p style="color:green;">Successfully sent message! I will get back to you as soon as possible!</p><button class="resetBtn">Send Another</button></div>';
+                                    content.innerHTML = '<div class="successContainer"><p style="color:green;">Successfully sent message! I will get back to you as soon as possible!</p><button class="resetBtn button">Send Another</button></div>';
 
                                     const resetBtn = content.querySelector('.resetBtn');
                                     resetBtn.addEventListener('click', function(e){
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                         setupEmailForm();
                                     });
                                 } else {
-                                    content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn">Send Another</button></div>';
+                                    content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn button">Send Another</button></div>';
 
                                     const resetBtn = content.querySelector('.resetBtn');
                                     resetBtn.addEventListener('click', function(e){
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                 }
                             })
                             .catch(() => {
-                                content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn">Send Another</button></div>';
+                                content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn button">Send Another</button></div>';
 
                                 const resetBtn = content.querySelector('.resetBtn');
                                 resetBtn.addEventListener('click', function(e){

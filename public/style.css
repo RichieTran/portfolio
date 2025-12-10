@@ -245,6 +245,15 @@ footer {
     background-size: 60%;
     background-position: center;
     background-repeat: no-repeat;
+    transition: all 0.05s ease;
+}
+
+#windowHeader close:active{
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    border-bottom: 2px solid #F2F2F2;
+    border-right: 2px solid #F2F2F2;
+    filter: drop-shadow(0px 0px 0px black);
 }
 
 .window content {
@@ -475,4 +484,17 @@ footer {
     text-align: center;
     padding: 50px;
     font-family: "W95";
+}
+
+.button{
+    transition: all 0.05s ease;
+}
+
+.button:active{
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    border-bottom: 2px solid #F2F2F2;
+    border-right: 2px solid #F2F2F2;
+    filter: drop-shadow(0px 0px 0px black);
+    transform: translate(1px, 1px);
 }
