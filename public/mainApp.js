@@ -16,6 +16,7 @@ let lastClicked = null;
 let lastOpened = null;
 let muted = false;
 let zLevel = 0;
+let startMenuOpen = false;
 
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelector('.speaker').addEventListener('click', function(element){
@@ -24,6 +25,48 @@ document.addEventListener('DOMContentLoaded', function(){
             document.querySelector('.speaker').classList.add('muted');
         } else {
             document.querySelector('.speaker').classList.remove('muted');
+        }
+    });
+
+    const startButton = document.querySelector('.start');
+
+    startButton.addEventListener('click', function(element){
+        element.stopPropagation();
+        if(!startMenuOpen){
+            const startMenu = document.createElement('div');
+            startMenu.id = 'startMenu';
+            startMenu.className = 'startMenu';
+
+            startMenu.style.position = 'absolute';
+            startMenu.style.bottom = '45px';
+            startMenu.style.left = '3px';
+
+            startMenu.innerHTML = '<div class="startMenuSidebar"><p>Windows<span>95</span></p></div><div class="startMenuContent"><button class="menuItem button"><img src="images/AbtMe.png" alt="">Programs</button><button class="menuItem button"><img src="images/Resume.png" alt="">Documents</button><button class="menuItem button"><img src="images/Experience.png" alt="">Settings</button><button class="menuItem button"><img src="images/Socials.png" alt="">Find</button><button class="menuItem button"><img src="images/Email.png" alt="">Help</button><div class="menuDivider"></div><button class="menuItem button"><img src="images/AbtMe.png" alt="">Shut Down...</button></div>';
+
+            document.body.appendChild(startMenu);
+            startButton.classList.add('pressed');
+            startMenuOpen = true;
+        } else {
+            const menu = document.getElementById('startMenu');
+            if(menu){
+                menu.remove();
+            }
+            startButton.classList.remove('pressed');
+            startMenuOpen = false;
+        }
+    });
+
+    document.body.addEventListener('click', function(element){
+        const clickedStart = element.target.closest('.start');
+        const clickedStartMenu = element.target.closest('#startMenu');
+
+        if(!clickedStart && !clickedStartMenu && startMenuOpen){
+            const menu = document.getElementById('startMenu');
+            if(menu){
+                menu.remove();
+            }
+            startButton.classList.remove('pressed');
+            startMenuOpen = false;
         }
     });
 
@@ -184,8 +227,39 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 if (lastOpened){
                     lastOpened.classList.add('background');
+                    const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lastTaskbarItem){
+                        lastTaskbarItem.classList.remove('active');
+                    }
                 }
                 lastOpened = win;
+
+                // Create taskbar item
+                const taskbarItems = document.getElementById('taskbarItems');
+                const taskbarItem = document.createElement('button');
+                taskbarItem.className = 'taskbarItem active';
+                taskbarItem.id = app.id + 'TaskbarItem';
+                taskbarItem.innerHTML = document.getElementById(app.id + "Img").outerHTML + '<span>' + app.id + '</span>';
+
+                taskbarItem.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    if(win.classList.contains('background')){
+                        if(lastOpened){
+                            lastOpened.classList.add('background');
+                            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                            if(lastTaskbarItem){
+                                lastTaskbarItem.classList.remove('active');
+                            }
+                        }
+                        win.classList.remove('background');
+                        taskbarItem.classList.add('active');
+                        lastOpened = win;
+                        win.style.zIndex = zLevel;
+                        zLevel += 1;
+                    }
+                });
+
+                taskbarItems.appendChild(taskbarItem);
 
                 dragElement(win);
 
@@ -194,6 +268,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     e.stopPropagation();
                     win.remove();
                     app.classList.remove('opened');
+                    taskbarItem.remove();
                     if(lastOpened === win){
                         lastOpened = null;
                     }
@@ -201,11 +276,19 @@ document.addEventListener('DOMContentLoaded', function(){
             }
             else if(document.getElementById(app.id + "Window").classList.contains('background')){
                 const win = document.getElementById(app.id + "Window");
+                const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                if(lastTaskbarItem){
+                    lastTaskbarItem.classList.remove('active');
+                }
                 lastOpened.classList.add('background');
                 win.classList.remove('background');
                 win.style.zIndex = zLevel;
                 zLevel += 1;
                 lastOpened = win;
+                const taskbarItem = document.getElementById(app.id + 'TaskbarItem');
+                if(taskbarItem){
+                    taskbarItem.classList.add('active');
+                }
             }
         }
     });
@@ -215,22 +298,38 @@ document.addEventListener('DOMContentLoaded', function(){
         if(clickedWindow && clickedWindow !== lastOpened){
             if(lastOpened){
                 lastOpened.classList.add('background');
+                const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                if(lastTaskbarItem){
+                    lastTaskbarItem.classList.remove('active');
+                }
             }
             clickedWindow.classList.remove('background');
             lastOpened = clickedWindow;
             clickedWindow.style.zIndex = zLevel;
             zLevel += 1;
+            const taskbarItem = document.getElementById(clickedWindow.id.replace('Window', 'TaskbarItem'));
+            if(taskbarItem){
+                taskbarItem.classList.add('active');
+            }
         }
     });
 
     document.body.addEventListener('mousedown', function(element){
         const window = element.target.closest('.window');
         if(window && window.classList.contains('background')){
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
             lastOpened.classList.add('background');
             window.classList.remove('background');
             lastOpened = window;
             window.style.zIndex = zLevel;
             zLevel += 1;
+            const taskbarItem = document.getElementById(window.id.replace('Window', 'TaskbarItem'));
+            if(taskbarItem){
+                taskbarItem.classList.add('active');
+            }
         }
     });
 

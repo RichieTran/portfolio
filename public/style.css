@@ -27,11 +27,13 @@ footer {
     grid-column: 1;
     grid-row: 3;
     display: grid;
-    grid-template-columns: 4px 90px 1fr repeat(10, 10fr) 1fr 110px 4px;
+    grid-template-columns: 4px 90px 1fr 110px 4px;
     background-color: #BDBBBD;
     border-top: 2px solid #f2f2f2;
     font-size: 14px;
     filter: drop-shadow(0px -0.5px #BDBBBD);
+    position: relative;
+    z-index: 10000;
 }
 
 .start{
@@ -55,6 +57,15 @@ footer {
     font-size: 22px;
     filter: drop-shadow(1px 1px 1px black);
     cursor: url('images/hoverCursor.png'), auto;
+    transition: all 0.05s ease;
+}
+
+.start.pressed{
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    border-bottom: 2px solid #F2F2F2;
+    border-right: 2px solid #F2F2F2;
+    filter: drop-shadow(0px 0px 0px black);
 }
 
 .startImg {
@@ -69,6 +80,63 @@ footer {
     height: 21px;
 }
 
+.taskbarItems{
+    grid-column: 3;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 0 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.taskbarItems::-webkit-scrollbar{
+    display: none;
+}
+
+.taskbarItem{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 4px 8px 4px 6px;
+    height: 35px;
+    width: 180px;
+    background-color: #BDBBBD;
+    border-right: 2px solid #8F8F8F;
+    border-bottom: 2px solid #8F8F8F;
+    border-left: 2px solid #f2f2f2;
+    border-top: 2px solid #f2f2f2;
+    font-family: "W95";
+    font-size: 14px;
+    cursor: url('images/hoverCursor.png'), auto;
+    text-align: left;
+}
+
+.taskbarItem img{
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: block;
+    align-self: center;
+}
+
+.taskbarItem span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    align-self: center;
+    line-height: 1;
+}
+
+.taskbarItem.active{
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    border-bottom: 2px solid #F2F2F2;
+    border-right: 2px solid #F2F2F2;
+}
+
 .time {
     display: flex;
     align-items: center;
@@ -78,7 +146,7 @@ footer {
     margin-top: 0;
     margin-bottom: 0;
     padding-right: 2px;
-    grid-column: 15;
+    grid-column: 4;
     font-size: 18px;
     background-color: #BDBBBD;
     border-right: 2px solid #f2f2f2;
@@ -499,4 +567,85 @@ footer {
     border-right: 2px solid #F2F2F2;
     filter: drop-shadow(0px 0px 0px black);
     transform: translate(1px, 1px);
+}
+
+.startMenu{
+    position: absolute;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    filter: drop-shadow(2px 2px 1px black);
+    font-family: "W95";
+    width: 250px;
+    z-index: 9999;
+    display: flex;
+}
+
+.startMenuSidebar{
+    background: linear-gradient(to right, #000080, #1084d0);
+    width: 25px;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px 5px;
+}
+
+.startMenuSidebar p{
+    color: #BDBBBD;
+    font-size: 24px;
+    font-weight: bold;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.startMenuSidebar p span{
+    font-size: 28px;
+}
+
+.startMenuContent{
+    flex: 1;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menuItem{
+    background-color: #BDBBBD;
+    border: none;
+    font-family: "W95";
+    font-size: 16px;
+    text-align: left;
+    padding: 8px 10px;
+    cursor: url('images/hoverCursor.png'), auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1px 0;
+    transition: none;
+}
+
+.menuItem img{
+    width: 32px;
+    height: 32px;
+}
+
+.menuItem:hover{
+    background-color: #000080;
+    color: white;
+}
+
+.menuItem:active{
+    border: none;
+    filter: none;
+    transform: none;
+}
+
+.menuDivider{
+    height: 1px;
+    background-color: #8F8F8F;
+    margin: 3px 5px;
+    border-top: 1px solid #F2F2F2;
 }
