@@ -41,9 +41,22 @@ document.addEventListener('DOMContentLoaded', function(){
             startMenu.style.bottom = '45px';
             startMenu.style.left = '3px';
 
-            startMenu.innerHTML = '<div class="startMenuSidebar"><p>Windows<span>95</span></p></div><div class="startMenuContent"><button class="menuItem button"><img src="images/AbtMe.png" alt="">Programs</button><button class="menuItem button"><img src="images/Resume.png" alt="">Documents</button><button class="menuItem button"><img src="images/Experience.png" alt="">Settings</button><button class="menuItem button"><img src="images/Socials.png" alt="">Find</button><button class="menuItem button"><img src="images/Email.png" alt="">Help</button><div class="menuDivider"></div><button class="menuItem button"><img src="images/AbtMe.png" alt="">Shut Down...</button></div>';
+            startMenu.innerHTML = '<div class="startMenuSidebar"><p>Windows<span>95</span></p></div><div class="startMenuContent"><button class="menuItem button" id="menuResume"><img src="images/Resume.png" alt="">Resume</button><button class="menuItem button" id="menuSettings"><img src="images/Experience.png" alt="">Settings</button><button class="menuItem button" id="menuFind"><img src="images/Socials.png" alt="">Find</button><button class="menuItem button" id="menuHelp"><img src="images/Email.png" alt="">Help</button><div class="menuDivider"></div><button class="menuItem button" id="menuShutDown"><img src="images/AbtMe.png" alt="">Shut Down...</button></div>';
 
             document.body.appendChild(startMenu);
+
+            // Used Claude to create an event listener for resume button on the start menu
+            startMenu.querySelector('#menuResume').addEventListener('click', function(e){
+                e.stopPropagation();
+                const app = document.getElementById('Resume');
+                if(app && !app.classList.contains('opened')){
+                    app.dispatchEvent(new MouseEvent('dblclick', {bubbles: true}));
+                }
+                startMenu.remove();
+                startButton.classList.remove('pressed');
+                startMenuOpen = false;
+            });
+
             startButton.classList.add('pressed');
             startMenuOpen = true;
         } else {
