@@ -100,6 +100,17 @@ document.addEventListener('DOMContentLoaded', function(){
 
     appGrid.addEventListener('dblclick', function(element){
         const app = element.target.closest('.app');
+        const clickedStart = element.target.closest('.start');
+        const clickedStartMenu = element.target.closest('#startMenu');
+
+        if(!clickedStart && !clickedStartMenu && startMenuOpen){
+            const menu = document.getElementById('startMenu');
+            if(menu){
+                menu.remove();
+            }
+            startButton.classList.remove('pressed');
+            startMenuOpen = false;
+        }
         if(app){
             element.stopPropagation();
             if(!app.classList.contains('opened')){
