@@ -41,7 +41,29 @@ document.addEventListener('DOMContentLoaded', function(){
             startMenu.style.bottom = '45px';
             startMenu.style.left = '3px';
 
-            startMenu.innerHTML = '<div class="startMenuSidebar"><p>Windows<span>95</span></p></div><div class="startMenuContent"><button class="menuItem button" id="menuResume"><img src="images/Resume.png" alt="">Resume</button><button class="menuItem button" id="menuSettings"><img src="images/Experience.png" alt="">Settings</button><button class="menuItem button" id="menuFind"><img src="images/Socials.png" alt="">Find</button><button class="menuItem button" id="menuHelp"><img src="images/Email.png" alt="">Help</button><div class="menuDivider"></div><button class="menuItem button" id="menuShutDown"><img src="images/AbtMe.png" alt="">Shut Down...</button></div>';
+            startMenu.innerHTML = `
+                <div class="startMenuSidebar">
+                    <p>Windows<span>95</span></p>
+                </div>
+                <div class="startMenuContent">
+                    <button class="menuItem button" id="menuResume">
+                        <img src="images/Resume.png" alt="">Resume
+                    </button>
+                    <button class="menuItem button" id="menuSettings">
+                        <img src="images/Experience.png" alt="">Settings
+                    </button>
+                    <button class="menuItem button" id="menuFind">
+                        <img src="images/Socials.png" alt="">Find
+                    </button>
+                    <button class="menuItem button" id="menuGithub">
+                        <img src="images/GitHubLogo.png" alt="">Github
+                    </button>
+                    <div class="menuDivider"></div>
+                    <button class="menuItem button" id="menuShutDown">
+                        <img src="images/AbtMe.png" alt="">Shut Down...
+                    </button>
+                </div>
+            `;
 
             document.body.appendChild(startMenu);
 
@@ -57,7 +79,16 @@ document.addEventListener('DOMContentLoaded', function(){
                 startMenuOpen = false;
             });
 
-            // Settings button click handler, functionality made with Claude
+            startMenu.querySelector('#menuGithub').addEventListener('click', function(e){
+                e.stopPropagation();
+                window.open('https://github.com/RichieTran/portfolio', '_blank');
+                startMenu.remove();
+                startButton.classList.remove('pressed');
+                startMenuOpen = false;
+            });
+
+
+            // Settings button click handler, styling made with Claude, first color template from Claude
             startMenu.querySelector('#menuSettings').addEventListener('click', function(e){
                 e.stopPropagation();
                 if(!document.getElementById('SettingsWindow')){
@@ -70,7 +101,60 @@ document.addEventListener('DOMContentLoaded', function(){
                     win.style.left = '200px';
                     win.style.top = '100px';
 
-                    win.innerHTML = '<header id="windowHeader"><icon><img src="images/Experience.png" alt=""></icon><p>Settings</p><close class="button"></close></header><content><div class="settingsTabs"><button class="settingsTab active" data-tab="wallpaper">Wallpaper</button><button class="settingsTab" data-tab="bgicon">Background Icon</button></div><div class="settingsPanel" id="wallpaperPanel"><div class="settingsPreview"><div class="previewMonitor"><div class="previewScreen" id="wallpaperPreview"><img class="previewIcon" src="images/Background.png" alt=""></div></div></div><fieldset class="settingsFieldset"><legend>Wallpaper</legend><p>Select a color</p><div class="settingsList" id="wallpaperList"><div class="settingsOption selected" data-value="#01ADAD">(None)</div><div class="settingsOption" data-value="#000080">Blue</div></div></fieldset></div><div class="settingsPanel hidden" id="bgiconPanel"><div class="settingsPreview"><div class="previewMonitor"><div class="previewScreen" id="iconPreview"><img class="previewIcon" src="images/Background.png" alt=""></div></div></div><fieldset class="settingsFieldset"><legend>Background Icon</legend><p>Select an icon</p><div class="settingsList" id="iconList"><div class="settingsOption selected" data-value="images/Background.png">Default</div><div class="settingsOption" data-value="none">None</div></div></fieldset></div><div class="settingsButtons"><button class="settingsBtn button" id="settingsOK">OK</button><button class="settingsBtn button" id="settingsCancel">Cancel</button><button class="settingsBtn button" id="settingsApply">Apply</button></div></content>';
+                    win.innerHTML = `
+                        <header id="windowHeader">
+                            <icon><img src="images/Experience.png" alt=""></icon>
+                            <p>Settings</p>
+                            <close class="button"></close>
+                        </header>
+                        <content>
+                            <div class="settingsTabs">
+                                <button class="settingsTab active" data-tab="wallpaper">Wallpaper</button>
+                                <button class="settingsTab" data-tab="bgicon">Background Icon</button>
+                            </div>
+                            <div class="settingsPanel" id="wallpaperPanel">
+                                <div class="settingsPreview">
+                                    <div class="previewMonitor">
+                                        <div class="previewScreen" id="wallpaperPreview">
+                                            <img class="previewIcon" src="images/Background.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <fieldset class="settingsFieldset">
+                                    <legend>Wallpaper</legend>
+                                    <p>Select a color</p>
+                                    <div class="settingsList" id="wallpaperList">
+                                        <div class="settingsOption selected" data-value="#01ADAD">Default (Teal)</div>
+                                        <div class="settingsOption" data-value="#367dc9">Blue</div>
+                                        <div class="settingsOption" data-value="#ba3434">Red</div>
+                                        <div class="settingsOption" data-value="#32a852">Green</div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="settingsPanel hidden" id="bgiconPanel">
+                                <div class="settingsPreview">
+                                    <div class="previewMonitor">
+                                        <div class="previewScreen" id="iconPreview">
+                                            <img class="previewIcon" src="images/Background.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <fieldset class="settingsFieldset">
+                                    <legend>Background Icon</legend>
+                                    <p>Select an icon</p>
+                                    <div class="settingsList" id="iconList">
+                                        <div class="settingsOption selected" data-value="images/Background.png">Default</div>
+                                        <div class="settingsOption" data-value="none">None</div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="settingsButtons">
+                                <button class="settingsBtn button" id="settingsOK">OK</button>
+                                <button class="settingsBtn button" id="settingsCancel">Cancel</button>
+                                <button class="settingsBtn button" id="settingsApply">Apply</button>
+                            </div>
+                        </content>
+                    `;
 
                     document.body.appendChild(win);
                     win.style.zIndex = zLevel;
@@ -160,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         const selectedColor = win.querySelector('#wallpaperList .settingsOption.selected');
                         if(selectedColor){
                             document.querySelector('.appGrid').style.backgroundColor = selectedColor.dataset.value;
+                            document.querySelector('.blank').style.backgroundColor = selectedColor.dataset.value;
                         }
                         // Apply background icon
                         const selectedIcon = win.querySelector('#iconList .settingsOption.selected');
@@ -290,18 +375,40 @@ document.addEventListener('DOMContentLoaded', function(){
                 win.style.left = randomX + 'px';
                 win.style.top = randomY + 'px';
 
-                win.innerHTML = '<header id=windowHeader><icon>' + document.getElementById(app.id + "Img").outerHTML + '</icon><p>' + app.id + '</p><close></close></header>' + '<content></content>';
+                win.innerHTML = `
+                    <header id="windowHeader">
+                        <icon>${document.getElementById(app.id + "Img").outerHTML}</icon>
+                        <p>${app.id}</p>
+                        <close></close>
+                    </header>
+                    <content></content>
+                `;
 
                 if(app.id === "About Me"){
                     win.style.width = '400px';
                     win.style.height = '500px'
                     const content = win.querySelector('content');
-                    content.innerHTML = '<img id="Richie" src="images/Richie.jpg" alt="Richie"><p id="RichieDescription">Hi, I\'m Richie! I\'m currently an undergrad at Carnegie Mellon University studying computer science with a concentration in machine learning.  I\'m passionate about building technology that makes a real difference, especially tools that improve accessibility and serve communities.</p>'
+                    content.innerHTML = `
+                        <img id="Richie" src="images/Richie.jpg" alt="Richie">
+                        <p id="RichieDescription">
+                            Hi, I'm Richie! I'm currently an undergrad at Carnegie Mellon University
+                            studying computer science with a concentration in machine learning. I'm
+                            passionate about building technology that makes a real difference, especially
+                            tools that improve accessibility and serve communities.
+                        </p>
+                    `;
                 }
 
                 if(app.id === "Socials"){
                     const content = win.querySelector('content');
-                    content.innerHTML = '<button class="socialBtn button" id="github"></button><p id="githubDesc">Click the button to go to my GitHub or find me by my username RichieTran!</p><button class="socialBtn button" id="linkedin"></button><p id="linkedInDesc">Click the button to go to my Linked In or find me by my username richiettran!</p><button class="socialBtn button" id="email"></button><p id="emailDesc">Click the button to email me or find me by my email richietran2024@gmail.com!</p>';
+                    content.innerHTML = `
+                        <button class="socialBtn button" id="github"></button>
+                        <p id="githubDesc">Click the button to go to my GitHub or find me by my username RichieTran!</p>
+                        <button class="socialBtn button" id="linkedin"></button>
+                        <p id="linkedInDesc">Click the button to go to my Linked In or find me by my username richiettran!</p>
+                        <button class="socialBtn button" id="email"></button>
+                        <p id="emailDesc">Click the button to email me or find me by my email richietran2024@gmail.com!</p>
+                    `;
                     document.body.addEventListener('click', function(element){
                         const button = element.target.closest('.socialBtn');
                         if(button && button.id == "github"){
@@ -318,7 +425,13 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 if(app.id === "Resume"){
                     const content = win.querySelector('content');
-                    content.innerHTML = '<div class="resumeContainer"><button class="resumeBtn button" id="downloadBtn">Download</button><button class="resumeBtn button" id="newTabBtn">New Tab</button><iframe src="images/Resume.pdf#toolbar=0" height="440" width="775" title="resume"></iframe></div>';
+                    content.innerHTML = `
+                        <div class="resumeContainer">
+                            <button class="resumeBtn button" id="downloadBtn">Download</button>
+                            <button class="resumeBtn button" id="newTabBtn">New Tab</button>
+                            <iframe src="images/Resume.pdf#toolbar=0" height="440" width="775" title="resume"></iframe>
+                        </div>
+                    `;
 
                     const downloadBtn = content.querySelector('#downloadBtn');
                     const newTabBtn = content.querySelector('#newTabBtn');
@@ -341,7 +454,28 @@ document.addEventListener('DOMContentLoaded', function(){
                     const content = win.querySelector('content');
 
                     function setupEmailForm(){
-                        content.innerHTML = '<form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST"><input type="text" name="_honey" style="display: none;"><input type="hidden" name="_captcha" value="false"><div class="formRow"><div class="formGroup"><label for="senderName">Name:</label><input type="text" id="senderName" name="name" placeholder="John Doe" required></div><div class="formGroup"><label for="senderEmail">Email:</label><input type="email" id="senderEmail" name="email" placeholder="johndoe123@gmail.com" required></div></div><div class="formGroup"><label for="message">Message:</label><textarea id="message" name="message" placeholder="Your message here!" rows="21" required></textarea></div><button type="submit" class="sendBtn button">Send</button><p class="formStatus"></p></form>';
+                        content.innerHTML = `
+                            <form id="emailForm" action="https://formsubmit.co/473818481a1ac32069eefe408f4df23e" method="POST">
+                                <input type="text" name="_honey" style="display: none;">
+                                <input type="hidden" name="_captcha" value="false">
+                                <div class="formRow">
+                                    <div class="formGroup">
+                                        <label for="senderName">Name:</label>
+                                        <input type="text" id="senderName" name="name" placeholder="John Doe" required>
+                                    </div>
+                                    <div class="formGroup">
+                                        <label for="senderEmail">Email:</label>
+                                        <input type="email" id="senderEmail" name="email" placeholder="johndoe123@gmail.com" required>
+                                    </div>
+                                </div>
+                                <div class="formGroup">
+                                    <label for="message">Message:</label>
+                                    <textarea id="message" name="message" placeholder="Your message here!" rows="21" required></textarea>
+                                </div>
+                                <button type="submit" class="sendBtn button">Send</button>
+                                <p class="formStatus"></p>
+                            </form>
+                        `;
 
                         const form = content.querySelector('#emailForm');
                         const statusMsg = content.querySelector('.formStatus');
@@ -361,7 +495,12 @@ document.addEventListener('DOMContentLoaded', function(){
                             })
                             .then(response => {
                                 if(response.ok){
-                                    content.innerHTML = '<div class="successContainer"><p style="color:green;">Successfully sent message! I will get back to you as soon as possible!</p><button class="resetBtn button">Send Another</button></div>';
+                                    content.innerHTML = `
+                                        <div class="successContainer">
+                                            <p style="color:green;">Successfully sent message! I will get back to you as soon as possible!</p>
+                                            <button class="resetBtn button">Send Another</button>
+                                        </div>
+                                    `;
 
                                     const resetBtn = content.querySelector('.resetBtn');
                                     resetBtn.addEventListener('click', function(e){
@@ -369,7 +508,12 @@ document.addEventListener('DOMContentLoaded', function(){
                                         setupEmailForm();
                                     });
                                 } else {
-                                    content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn button">Send Another</button></div>';
+                                    content.innerHTML = `
+                                        <div class="successContainer">
+                                            <p style="color:red;">Error sending message. Please try again.</p>
+                                            <button class="resetBtn button">Send Another</button>
+                                        </div>
+                                    `;
 
                                     const resetBtn = content.querySelector('.resetBtn');
                                     resetBtn.addEventListener('click', function(e){
@@ -379,7 +523,12 @@ document.addEventListener('DOMContentLoaded', function(){
                                 }
                             })
                             .catch(() => {
-                                content.innerHTML = '<div class="successContainer"><p style="color:red;">Error sending message. Please try again.</p><button class="resetBtn button">Send Another</button></div>';
+                                content.innerHTML = `
+                                    <div class="successContainer">
+                                        <p style="color:red;">Error sending message. Please try again.</p>
+                                        <button class="resetBtn button">Send Another</button>
+                                    </div>
+                                `;
 
                                 const resetBtn = content.querySelector('.resetBtn');
                                 resetBtn.addEventListener('click', function(e){

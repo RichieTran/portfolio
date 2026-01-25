@@ -8,9 +8,15 @@
     src: url("fonts/w95fa.woff") format("woff");
 }
 
+/* Used Claude to add better responsiveness to smaller screens */
 @media screen and (max-width: 767px) {
-    .backgroundImg {
-        display: none;
+    body {
+        overflow-x: auto;
+    }
+
+    .appGrid {
+        min-width: 100vw;
+        width: max-content;
     }
 }
 
