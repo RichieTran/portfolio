@@ -340,7 +340,7 @@ footer {
 #About\ MeWindow content{
     display: grid;
     grid-template-columns: auto 350px auto;
-    grid-template-rows: auto 300px 100px auto;
+    grid-template-rows: 10px 300px 100px auto;
 }
 
 #Richie{

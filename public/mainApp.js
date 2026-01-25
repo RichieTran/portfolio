@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                 if(app.id === "About Me"){
                     win.style.width = '400px';
-                    win.style.height = '500px'
+                    win.style.height = '550px'
                     const content = win.querySelector('content');
                     content.innerHTML = `
                         <img id="Richie" src="images/Richie.jpg" alt="Richie">
@@ -434,6 +434,8 @@ document.addEventListener('DOMContentLoaded', function(){
                             studying computer science with a concentration in machine learning. I'm
                             passionate about building technology that makes a real difference, especially
                             tools that improve accessibility and serve communities.
+                            <br><br>
+                            I like working on everything from frontend and mobile to backend and systems. Feel free to reach out!
                         </p>
                     `;
                 }
