@@ -988,7 +988,7 @@ footer {
     cursor: url('images/hoverCursor.png'), auto;
 }
 
-/* Used Claude to blur background when shut down window is opened
+/* Blur background, not working right now
 .modalOverlay{
     position: fixed;
     top: 0;
@@ -1001,9 +1001,6 @@ footer {
 
 .shutdownWindow{
     z-index: 10001;
-    isolation: isolate;
-    will-change: transform;
-    contain: layout paint;
 }
 
 .blackScreen{
