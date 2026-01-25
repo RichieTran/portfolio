@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 }
             });
 
-            // Settings button click handler, styling made with Claude, first color template from Claude
+            // Settings button click handler, styling made with Claude, first color and no logo template from Claude
             startMenu.querySelector('#menuSettings').addEventListener('click', function(e){
                 e.stopPropagation();
                 if(!document.getElementById('SettingsWindow')){
@@ -244,7 +244,8 @@ document.addEventListener('DOMContentLoaded', function(){
                                     <p>Select an icon</p>
                                     <div class="settingsList" id="iconList">
                                         <div class="settingsOption selected" data-value="images/Background.png">Default</div>
-                                        <div class="settingsOption" data-value="none">None</div>
+                                        <div class="settingsOption" data-value="none">None (keep text)</div>
+                                        <div class="settingsOption" data-value="removeall">Remove All</div>
                                     </div>
                                 </fieldset>
                             </div>
@@ -328,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function(){
                             option.classList.add('selected');
                             // Update preview icon
                             const previewIcon = win.querySelector('#iconPreview .previewIcon');
-                            if(option.dataset.value === 'none'){
+                            if(option.dataset.value === 'removeall' || option.dataset.value === 'none'){
                                 previewIcon.style.display = 'none';
                             } else {
                                 previewIcon.style.display = 'block';
@@ -350,11 +351,18 @@ document.addEventListener('DOMContentLoaded', function(){
                         const selectedIcon = win.querySelector('#iconList .settingsOption.selected');
                         const backgroundImg = document.querySelector('.backgroundImg');
                         const backgroundIcon = document.getElementById('background');
+                        const backgroundText = backgroundImg.querySelector('p');
                         if(selectedIcon){
-                            if(selectedIcon.dataset.value === 'none'){
+                            if(selectedIcon.dataset.value === 'removeall'){
                                 backgroundImg.style.display = 'none';
+                            } else if(selectedIcon.dataset.value === 'none'){
+                                backgroundImg.style.display = 'flex';
+                                backgroundIcon.style.display = 'none';
+                                backgroundText.style.display = 'block';
                             } else {
-                                backgroundImg.style.display = 'block';
+                                backgroundImg.style.display = 'flex';
+                                backgroundIcon.style.display = 'block';
+                                backgroundText.style.display = 'block';
                                 backgroundIcon.src = selectedIcon.dataset.value;
                             }
                         }
