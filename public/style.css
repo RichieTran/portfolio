@@ -707,15 +707,16 @@ footer {
     border-bottom: none;
     cursor: url('images/hoverCursor.png'), auto;
     position: relative;
-    top: 2px;
+    top: -2px;
+    z-index: 2;
 }
 
 .settingsTab.active{
     border-bottom: 2px solid #BDBBBD;
     top: 0;
-    z-index: 2;
+    z-index: 1;
     outline: 1px dotted #000;
-    outline-offset: -4px;
+    outline-offset: -8px;
 }
 
 .settingsPanel{
@@ -897,4 +898,120 @@ footer {
     border-left: 1px solid #F2F2F2;
     margin-left: 2px;
     margin-right: 2px;
+}
+
+/* Shut Down Window, styled using Claude */
+.shutdownWindow header{
+    grid-row: 1;
+    background-color: #000080;
+    color: white;
+    font-size: 18px;
+    margin: 3px;
+    display: grid;
+    grid-template-columns: auto auto 30px;
+    align-items: center;
+}
+
+.shutdownWindow header p{
+    grid-column: 1;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.shutdownWindow header close{
+    grid-column: 3;
+    align-self: center;
+    justify-self: center;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    filter: drop-shadow(1px 1px 1px black);
+    margin: 0 5px;
+    background-color: #bdbbbd;
+    cursor: url('images/hoverCursor.png'), auto;
+    background-image: url('images/close.png');
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.05s ease;
+}
+
+.shutdownWindow header close:active{
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    border-bottom: 2px solid #F2F2F2;
+    border-right: 2px solid #F2F2F2;
+    filter: drop-shadow(0px 0px 0px black);
+}
+
+.shutdownWindow content{
+    display: flex;
+    flex-direction: column;
+}
+
+.shutdownContent{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+}
+
+.shutdownIcon{
+    width: 48px;
+    height: 48px;
+}
+
+.shutdownContent p{
+    font-size: 14px;
+    margin: 0;
+}
+
+.shutdownButtons{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px 15px;
+}
+
+.shutdownBtn{
+    padding: 6px 25px;
+    font-family: "W95";
+    font-size: 14px;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    cursor: url('images/hoverCursor.png'), auto;
+}
+
+/* Used Claude to blur background when shut down window is opened
+.modalOverlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(2px);
+    z-index: 10000;
+}*/
+
+.shutdownWindow{
+    z-index: 10001;
+    isolation: isolate;
+    will-change: transform;
+    contain: layout paint;
+}
+
+.blackScreen{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 99999;
 }

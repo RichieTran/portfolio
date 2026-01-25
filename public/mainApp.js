@@ -126,6 +126,68 @@ document.addEventListener('DOMContentLoaded', function(){
                 }, 100);
             });
 
+            // Shut Down button click handler, used Claude for basic HTML
+            startMenu.querySelector('#menuShutDown').addEventListener('click', function(e){
+                e.stopPropagation();
+                closeStartMenu();
+
+                if(!document.getElementById('ShutDownWindow')){
+                    // Create modal overlay
+                    const overlay = document.createElement('div');
+                    overlay.className = 'modalOverlay';
+                    document.body.appendChild(overlay);
+
+                    const win = document.createElement('span');
+                    win.id = 'ShutDownWindow';
+                    win.className = 'window shutdownWindow';
+
+                    win.style.width = '350px';
+                    win.style.height = 'auto';
+                    win.style.left = '50%';
+                    win.style.top = '50%';
+                    win.style.transform = 'translate(-50%, -50%)';
+
+                    win.innerHTML = `
+                        <header>
+                            <p>Shut Down Windows</p>
+                            <close></close>
+                        </header>
+                        <content>
+                            <div class="shutdownContent">
+                                <img src="images/ShutDown.png" alt="" class="shutdownIcon">
+                                <p>Are you sure you want to shut down?</p>
+                            </div>
+                            <div class="shutdownButtons">
+                                <button class="shutdownBtn button" id="shutdownYes">Yes</button>
+                                <button class="shutdownBtn button" id="shutdownNo">No</button>
+                                <button class="shutdownBtn button" id="shutdownHelp">Help</button>
+                            </div>
+                        </content>
+                    `;
+
+                    document.body.appendChild(win);
+
+                    function closeShutdownWindow(){
+                        win.remove();
+                        overlay.remove();
+                    }
+
+                    win.querySelector('close').addEventListener('click', closeShutdownWindow);
+
+                    win.querySelector('#shutdownNo').addEventListener('click', closeShutdownWindow);
+
+                    win.querySelector('#shutdownYes').addEventListener('click', function(){
+                        closeShutdownWindow();
+                        const blackScreen = document.createElement('div');
+                        blackScreen.className = 'blackScreen';
+                        document.body.appendChild(blackScreen);
+                    });
+
+                    // Help does nothing
+                    win.querySelector('#shutdownHelp').addEventListener('click', function(){});
+                }
+            });
+
             // Settings button click handler, styling made with Claude, first color template from Claude
             startMenu.querySelector('#menuSettings').addEventListener('click', function(e){
                 e.stopPropagation();
