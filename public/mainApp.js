@@ -49,14 +49,15 @@ document.addEventListener('DOMContentLoaded', function(){
                     <button class="menuItem button" id="menuResume">
                         <img src="images/Resume.png" alt="">Resume
                     </button>
-                    <button class="menuItem button" id="menuSettings">
-                        <img src="images/Settings.png" alt="">Settings
-                    </button>
-                    <button class="menuItem button" id="menuFind">
-                        <img src="images/Socials.png" alt="">Find
+                    <button class="menuItem button hasSubmenu" id="menuProjects">
+                        <img src="images/Projects.png" alt="">Projects
+                        <span class="menuArrow">▶</span>
                     </button>
                     <button class="menuItem button" id="menuGithub">
                         <img src="images/GitHubLogo.png" alt="">Github
+                    </button>
+                    <button class="menuItem button" id="menuSettings">
+                        <img src="images/Settings.png" alt="">Settings
                     </button>
                     <div class="menuDivider"></div>
                     <button class="menuItem button" id="menuShutDown">
@@ -68,25 +69,62 @@ document.addEventListener('DOMContentLoaded', function(){
             document.body.appendChild(startMenu);
 
             // Used Claude to create an event listener for resume button on the start menu
+            // Projects submenu hover handler
+            const projectsBtn = startMenu.querySelector('#menuProjects');
+            let projectsSubmenu = null;
+
+            function closeProjectsSubmenu(){
+                if(projectsSubmenu){
+                    projectsSubmenu.remove();
+                    projectsSubmenu = null;
+                }
+            }
+
+            function closeStartMenu(){
+                closeProjectsSubmenu();
+                startMenu.remove();
+                startButton.classList.remove('pressed');
+                startMenuOpen = false;
+            }
+
             startMenu.querySelector('#menuResume').addEventListener('click', function(e){
                 e.stopPropagation();
                 const app = document.getElementById('Resume');
                 if(app && !app.classList.contains('opened')){
                     app.dispatchEvent(new MouseEvent('dblclick', {bubbles: true}));
                 }
-                startMenu.remove();
-                startButton.classList.remove('pressed');
-                startMenuOpen = false;
+                closeStartMenu();
             });
 
             startMenu.querySelector('#menuGithub').addEventListener('click', function(e){
                 e.stopPropagation();
                 window.open('https://github.com/RichieTran/portfolio', '_blank');
-                startMenu.remove();
-                startButton.classList.remove('pressed');
-                startMenuOpen = false;
+                closeStartMenu();
             });
 
+            // Used Claude to create submenu for projects start menu button
+            projectsBtn.addEventListener('mouseenter', function(){
+                if(!projectsSubmenu){
+                    projectsSubmenu = document.createElement('div');
+                    projectsSubmenu.className = 'submenu';
+                    projectsSubmenu.innerHTML = `<div class="submenuContent"></div>`;
+
+                    const rect = projectsBtn.getBoundingClientRect();
+                    projectsSubmenu.style.position = 'absolute';
+                    projectsSubmenu.style.left = (rect.right) + 'px';
+                    projectsSubmenu.style.bottom = (window.innerHeight - rect.bottom) + 'px';
+
+                    document.body.appendChild(projectsSubmenu);
+                }
+            });
+
+            projectsBtn.addEventListener('mouseleave', function(){
+                setTimeout(function(){
+                    if(projectsSubmenu && !projectsSubmenu.matches(':hover')){
+                        closeProjectsSubmenu();
+                    }
+                }, 100);
+            });
 
             // Settings button click handler, styling made with Claude, first color template from Claude
             startMenu.querySelector('#menuSettings').addEventListener('click', function(e){
@@ -286,9 +324,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     });
                 }
 
-                startMenu.remove();
-                startButton.classList.remove('pressed');
-                startMenuOpen = false;
+                closeStartMenu();
             });
 
             startButton.classList.add('pressed');
@@ -298,6 +334,7 @@ document.addEventListener('DOMContentLoaded', function(){
             if(menu){
                 menu.remove();
             }
+            document.querySelectorAll('.submenu').forEach(sub => sub.remove());
             startButton.classList.remove('pressed');
             startMenuOpen = false;
         }
@@ -306,12 +343,14 @@ document.addEventListener('DOMContentLoaded', function(){
     document.body.addEventListener('click', function(element){
         const clickedStart = element.target.closest('.start');
         const clickedStartMenu = element.target.closest('#startMenu');
+        const clickedSubmenu = element.target.closest('.submenu');
 
-        if(!clickedStart && !clickedStartMenu && startMenuOpen){
+        if(!clickedStart && !clickedStartMenu && !clickedSubmenu && startMenuOpen){
             const menu = document.getElementById('startMenu');
             if(menu){
                 menu.remove();
             }
+            document.querySelectorAll('.submenu').forEach(sub => sub.remove());
             startButton.classList.remove('pressed');
             startMenuOpen = false;
         }

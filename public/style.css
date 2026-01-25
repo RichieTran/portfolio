@@ -584,7 +584,7 @@ footer {
     border-right: 2px solid #8F8F8F;
     filter: drop-shadow(2px 2px 1px black);
     font-family: "W95";
-    width: 250px;
+    width: 200px;
     z-index: 9999;
     display: flex;
 }
@@ -654,6 +654,30 @@ footer {
     background-color: #8F8F8F;
     margin: 3px 5px;
     border-top: 1px solid #F2F2F2;
+}
+
+.menuItem.hasSubmenu{
+    justify-content: flex-start;
+}
+
+.menuArrow{
+    margin-left: auto;
+    font-size: 10px;
+}
+
+.submenu{
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    z-index: 9999;
+}
+
+.submenuContent{
+    width: 150px;
+    height: 120px;
+    background-color: #BDBBBD;
 }
 
 /* Settings Window, used Claude for styling most the window */
