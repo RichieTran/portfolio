@@ -649,3 +649,157 @@ footer {
     margin: 3px 5px;
     border-top: 1px solid #F2F2F2;
 }
+
+/* Settings Window, used Claude for styling most the window */
+.settingsWindow content{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 0;
+}
+
+.settingsTabs{
+    display: flex;
+    gap: 0;
+    margin-bottom: -2px;
+    z-index: 1;
+    position: relative;
+}
+
+.settingsTab{
+    padding: 6px 16px;
+    font-family: "W95";
+    font-size: 14px;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-right: 2px solid #8F8F8F;
+    border-bottom: none;
+    cursor: url('images/hoverCursor.png'), auto;
+    position: relative;
+    top: 2px;
+}
+
+.settingsTab.active{
+    border-bottom: 2px solid #BDBBBD;
+    top: 0;
+    z-index: 2;
+    outline: 1px dotted #000;
+    outline-offset: -4px;
+}
+
+.settingsPanel{
+    border: 2px solid #8F8F8F;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    padding: 15px;
+    background-color: #BDBBBD;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.settingsPanel.hidden{
+    display: none;
+}
+
+.settingsPreview{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #F2F2F2;
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    background-color: #BDBBBD;
+}
+
+.previewMonitor{
+    width: 150px;
+    height: 120px;
+    background: linear-gradient(135deg, #BDBBBD 0%, #9E9E9E 100%);
+    border: 3px solid #8F8F8F;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.previewScreen{
+    width: 100%;
+    height: 80px;
+    background-color: #01ADAD;
+    border: 2px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.previewIcon{
+    width: 40px;
+    height: auto;
+}
+
+.settingsFieldset{
+    border: 2px groove #BDBBBD;
+    padding: 10px;
+    margin: 0;
+    font-family: "W95";
+}
+
+.settingsFieldset legend{
+    padding: 0 5px;
+    font-size: 14px;
+}
+
+.settingsFieldset p{
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.settingsList{
+    background-color: white;
+    border-top: 2px solid #8F8F8F;
+    border-left: 2px solid #8F8F8F;
+    border-bottom: 2px solid #F2F2F2;
+    border-right: 2px solid #F2F2F2;
+    height: 80px;
+    overflow-y: auto;
+}
+
+.settingsOption{
+    padding: 2px 5px;
+    font-size: 14px;
+    cursor: url('images/hoverCursor.png'), auto;
+}
+
+.settingsOption:hover{
+    background-color: #000080;
+    color: white;
+}
+
+.settingsOption.selected{
+    background-color: #000080;
+    color: white;
+}
+
+.settingsButtons{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.settingsBtn{
+    padding: 6px 20px;
+    font-family: "W95";
+    font-size: 14px;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    cursor: url('images/hoverCursor.png'), auto;
+}

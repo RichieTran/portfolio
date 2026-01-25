@@ -57,6 +57,155 @@ document.addEventListener('DOMContentLoaded', function(){
                 startMenuOpen = false;
             });
 
+            // Settings button click handler, functionality made with Claude
+            startMenu.querySelector('#menuSettings').addEventListener('click', function(e){
+                e.stopPropagation();
+                if(!document.getElementById('SettingsWindow')){
+                    const win = document.createElement('span');
+                    win.id = 'SettingsWindow';
+                    win.className = 'window settingsWindow';
+
+                    win.style.width = '400px';
+                    win.style.height = '550px';
+                    win.style.left = '200px';
+                    win.style.top = '100px';
+
+                    win.innerHTML = '<header id="windowHeader"><icon><img src="images/Experience.png" alt=""></icon><p>Settings</p><close class="button"></close></header><content><div class="settingsTabs"><button class="settingsTab active" data-tab="wallpaper">Wallpaper</button><button class="settingsTab" data-tab="bgicon">Background Icon</button></div><div class="settingsPanel" id="wallpaperPanel"><div class="settingsPreview"><div class="previewMonitor"><div class="previewScreen" id="wallpaperPreview"><img class="previewIcon" src="images/Background.png" alt=""></div></div></div><fieldset class="settingsFieldset"><legend>Wallpaper</legend><p>Select a color</p><div class="settingsList" id="wallpaperList"><div class="settingsOption selected" data-value="#01ADAD">(None)</div><div class="settingsOption" data-value="#000080">Blue</div></div></fieldset></div><div class="settingsPanel hidden" id="bgiconPanel"><div class="settingsPreview"><div class="previewMonitor"><div class="previewScreen" id="iconPreview"><img class="previewIcon" src="images/Background.png" alt=""></div></div></div><fieldset class="settingsFieldset"><legend>Background Icon</legend><p>Select an icon</p><div class="settingsList" id="iconList"><div class="settingsOption selected" data-value="images/Background.png">Default</div><div class="settingsOption" data-value="none">None</div></div></fieldset></div><div class="settingsButtons"><button class="settingsBtn button" id="settingsOK">OK</button><button class="settingsBtn button" id="settingsCancel">Cancel</button><button class="settingsBtn button" id="settingsApply">Apply</button></div></content>';
+
+                    document.body.appendChild(win);
+                    win.style.zIndex = zLevel;
+                    zLevel += 1;
+
+                    if(lastOpened){
+                        lastOpened.classList.add('background');
+                        const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                        if(lastTaskbarItem){
+                            lastTaskbarItem.classList.remove('active');
+                        }
+                    }
+                    lastOpened = win;
+
+                    const taskbarItems = document.getElementById('taskbarItems');
+                    const taskbarItem = document.createElement('button');
+                    taskbarItem.className = 'taskbarItem active';
+                    taskbarItem.id = 'SettingsTaskbarItem';
+                    taskbarItem.innerHTML = '<img src="images/Experience.png" alt=""><span>Settings</span>';
+
+                    taskbarItem.addEventListener('click', function(e){
+                        e.stopPropagation();
+                        if(win.classList.contains('background')){
+                            if(lastOpened){
+                                lastOpened.classList.add('background');
+                                const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                                if(lastTaskbarItem){
+                                    lastTaskbarItem.classList.remove('active');
+                                }
+                            }
+                            win.classList.remove('background');
+                            taskbarItem.classList.add('active');
+                            lastOpened = win;
+                            win.style.zIndex = zLevel;
+                            zLevel += 1;
+                        }
+                    });
+
+                    taskbarItems.appendChild(taskbarItem);
+
+                    // Tab switching
+                    win.querySelectorAll('.settingsTab').forEach(function(tab){
+                        tab.addEventListener('click', function(e){
+                            e.stopPropagation();
+                            win.querySelectorAll('.settingsTab').forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            win.querySelectorAll('.settingsPanel').forEach(p => p.classList.add('hidden'));
+                            document.getElementById(tab.dataset.tab === 'wallpaper' ? 'wallpaperPanel' : 'bgiconPanel').classList.remove('hidden');
+                        });
+                    });
+
+                    // Wallpaper option selection
+                    win.querySelectorAll('#wallpaperList .settingsOption').forEach(function(option){
+                        option.addEventListener('click', function(e){
+                            e.stopPropagation();
+                            const list = option.closest('.settingsList');
+                            list.querySelectorAll('.settingsOption').forEach(o => o.classList.remove('selected'));
+                            option.classList.add('selected');
+                            // Update preview color
+                            const preview = win.querySelector('#wallpaperPreview');
+                            preview.style.backgroundColor = option.dataset.value;
+                        });
+                    });
+
+                    // Icon option selection
+                    win.querySelectorAll('#iconList .settingsOption').forEach(function(option){
+                        option.addEventListener('click', function(e){
+                            e.stopPropagation();
+                            const list = option.closest('.settingsList');
+                            list.querySelectorAll('.settingsOption').forEach(o => o.classList.remove('selected'));
+                            option.classList.add('selected');
+                            // Update preview icon
+                            const previewIcon = win.querySelector('#iconPreview .previewIcon');
+                            if(option.dataset.value === 'none'){
+                                previewIcon.style.display = 'none';
+                            } else {
+                                previewIcon.style.display = 'block';
+                                previewIcon.src = option.dataset.value;
+                            }
+                        });
+                    });
+
+                    // Apply button
+                    win.querySelector('#settingsApply').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        // Apply wallpaper color
+                        const selectedColor = win.querySelector('#wallpaperList .settingsOption.selected');
+                        if(selectedColor){
+                            document.querySelector('.appGrid').style.backgroundColor = selectedColor.dataset.value;
+                        }
+                        // Apply background icon
+                        const selectedIcon = win.querySelector('#iconList .settingsOption.selected');
+                        const backgroundImg = document.querySelector('.backgroundImg');
+                        const backgroundIcon = document.getElementById('background');
+                        if(selectedIcon){
+                            if(selectedIcon.dataset.value === 'none'){
+                                backgroundImg.style.display = 'none';
+                            } else {
+                                backgroundImg.style.display = 'block';
+                                backgroundIcon.src = selectedIcon.dataset.value;
+                            }
+                        }
+                    });
+
+                    // OK button (apply and close)
+                    win.querySelector('#settingsOK').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        win.querySelector('#settingsApply').click();
+                        closeBtn.click();
+                    });
+
+                    // Cancel button (close without applying)
+                    win.querySelector('#settingsCancel').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeBtn.click();
+                    });
+
+                    dragElement(win);
+
+                    const closeBtn = win.querySelector('close');
+                    closeBtn.addEventListener('click', function(e){
+                        e.stopPropagation();
+                        win.remove();
+                        taskbarItem.remove();
+                        if(lastOpened === win){
+                            lastOpened = null;
+                        }
+                    });
+                }
+
+                startMenu.remove();
+                startButton.classList.remove('pressed');
+                startMenuOpen = false;
+            });
+
             startButton.classList.add('pressed');
             startMenuOpen = true;
         } else {
