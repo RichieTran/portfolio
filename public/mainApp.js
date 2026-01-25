@@ -244,8 +244,9 @@ document.addEventListener('DOMContentLoaded', function(){
                                     <p>Select an icon</p>
                                     <div class="settingsList" id="iconList">
                                         <div class="settingsOption selected" data-value="images/Background.png">Default</div>
-                                        <div class="settingsOption" data-value="none">None (keep text)</div>
-                                        <div class="settingsOption" data-value="removeall">Remove All</div>
+                                        <div class="settingsOption" data-value="none">Text Only</div>
+                                        <div class="settingsOption" data-value="logoonly">Logo Only</div>
+                                        <div class="settingsOption" data-value="removeall">None</div>
                                     </div>
                                 </fieldset>
                             </div>
@@ -331,6 +332,9 @@ document.addEventListener('DOMContentLoaded', function(){
                             const previewIcon = win.querySelector('#iconPreview .previewIcon');
                             if(option.dataset.value === 'removeall' || option.dataset.value === 'none'){
                                 previewIcon.style.display = 'none';
+                            } else if(option.dataset.value === 'logoonly'){
+                                previewIcon.style.display = 'block';
+                                previewIcon.src = 'images/Background.png';
                             } else {
                                 previewIcon.style.display = 'block';
                                 previewIcon.src = option.dataset.value;
@@ -359,6 +363,10 @@ document.addEventListener('DOMContentLoaded', function(){
                                 backgroundImg.style.display = 'flex';
                                 backgroundIcon.style.display = 'none';
                                 backgroundText.style.display = 'block';
+                            } else if(selectedIcon.dataset.value === 'logoonly'){
+                                backgroundImg.style.display = 'flex';
+                                backgroundIcon.style.display = 'block';
+                                backgroundText.style.display = 'none';
                             } else {
                                 backgroundImg.style.display = 'flex';
                                 backgroundIcon.style.display = 'block';
