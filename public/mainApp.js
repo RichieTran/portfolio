@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         <img src="images/Resume.png" alt="">Resume
                     </button>
                     <button class="menuItem button" id="menuSettings">
-                        <img src="images/Experience.png" alt="">Settings
+                        <img src="images/Settings.png" alt="">Settings
                     </button>
                     <button class="menuItem button" id="menuFind">
                         <img src="images/Socials.png" alt="">Find
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     </button>
                     <div class="menuDivider"></div>
                     <button class="menuItem button" id="menuShutDown">
-                        <img src="images/AbtMe.png" alt="">Shut Down...
+                        <img src="images/ShutDown.png" alt="">Shut Down...
                     </button>
                 </div>
             `;
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                     win.innerHTML = `
                         <header id="windowHeader">
-                            <icon><img src="images/Experience.png" alt=""></icon>
+                            <icon><img src="images/Settings.png" alt=""></icon>
                             <p>Settings</p>
                             <close class="button"></close>
                         </header>
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     const taskbarItem = document.createElement('button');
                     taskbarItem.className = 'taskbarItem active';
                     taskbarItem.id = 'SettingsTaskbarItem';
-                    taskbarItem.innerHTML = '<img src="images/Experience.png" alt=""><span>Settings</span>';
+                    taskbarItem.innerHTML = '<img src="images/Settings.png" alt=""><span>Settings</span>';
 
                     taskbarItem.addEventListener('click', function(e){
                         e.stopPropagation();
@@ -396,6 +396,24 @@ document.addEventListener('DOMContentLoaded', function(){
                             passionate about building technology that makes a real difference, especially
                             tools that improve accessibility and serve communities.
                         </p>
+                    `;
+                }
+
+                if(app.id === "Projects"){
+                    win.classList.add('explorerWindow');
+                    const content = win.querySelector('content');
+                    content.innerHTML = `
+                        <div class="explorerMenuBar">
+                            <span class="explorerMenuItem"><u>F</u>ile</span>
+                            <span class="explorerMenuItem"><u>E</u>dit</span>
+                            <span class="explorerMenuItem"><u>V</u>iew</span>
+                            <span class="explorerMenuItem"><u>H</u>elp</span>
+                        </div>
+                        <div class="explorerContent"></div>
+                        <div class="explorerStatusBar">
+                            <span class="statusLeft">0 object(s)</span>
+                            <span class="statusRight"></span>
+                        </div>
                     `;
                 }
 

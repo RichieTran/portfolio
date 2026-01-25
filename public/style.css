@@ -809,3 +809,68 @@ footer {
     border-right: 2px solid #8F8F8F;
     cursor: url('images/hoverCursor.png'), auto;
 }
+
+/* Explorer Window, used Claude to mirror a file explorer from win98 */
+.explorerWindow content{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.explorerMenuBar{
+    display: flex;
+    gap: 0;
+    padding: 2px 5px;
+    background-color: #BDBBBD;
+    border-bottom: 1px solid #8F8F8F;
+}
+
+.explorerMenuItem{
+    padding: 2px 8px;
+    font-family: "W95";
+    font-size: 14px;
+    cursor: url('images/hoverCursor.png'), auto;
+}
+
+.explorerMenuItem u{
+    text-decoration: underline;
+}
+
+.explorerContent{
+    flex: 1;
+    background-color: white;
+    border: 2px solid #8F8F8F;
+    border-right: 2px solid #F2F2F2;
+    border-bottom: 2px solid #F2F2F2;
+    margin: 2px;
+}
+
+.explorerStatusBar{
+    display: flex;
+    background-color: #BDBBBD;
+    border-top: 1px solid #8F8F8F;
+    padding: 2px 0;
+}
+
+.statusLeft{
+    flex: 1;
+    padding: 2px 5px;
+    font-family: "W95";
+    font-size: 12px;
+    border: 1px solid #8F8F8F;
+    border-top: 1px solid #F2F2F2;
+    border-left: 1px solid #F2F2F2;
+    margin-left: 2px;
+}
+
+.statusRight{
+    width: 100px;
+    padding: 2px 5px;
+    font-family: "W95";
+    font-size: 12px;
+    border: 1px solid #8F8F8F;
+    border-top: 1px solid #F2F2F2;
+    border-left: 1px solid #F2F2F2;
+    margin-left: 2px;
+    margin-right: 2px;
+}
