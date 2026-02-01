@@ -580,11 +580,14 @@ document.addEventListener('DOMContentLoaded', function(){
             </header>
             <content>
                 <div class="projectContainer">
-                    <img class="projectImg" src="images/placeholder1.png" alt="AI Logo Generator Screenshot 1">
-                    <img class="projectImg" src="images/placeholder2.png" alt="AI Logo Generator Screenshot 2">
-                    <img class="projectImg" src="images/placeholder3.png" alt="AI Logo Generator Screenshot 3">
+                    <p class="projectDesc">I wanted to build a tool that leveraged a LLM in order to learn how to use AI APIs. To get started with using Claude API, I eventually decided to build a logo generator that uses Claude's Sonnet model to parse a transcript from a conversation or meeting where a user describes what kind of company they are trying to build/start. Then I used Claude's Opus model to generate a few logos with a description and reasoning behind it. Spoiler warning, if you ever want to generate logos, Claude's models are probably not the best LLMs to use! Some pictures below along with my repository for you to check out!</p>
+                    <img class="projectImg" src="images/logoGenerator/logoGen1.png" alt="AI Logo Generator Screenshot 1">
+                    <p class="projectDesc">This is the landing page for my site. I was going for a clean and minimalist design. Here you could either type in your company's description or upload a transcript. Once you uploaded, it would call Claude Sonnet to parse and analyze your data.</p>
+                    <img class="projectImg" src="images/logoGenerator/logoGen2.png" alt="AI Logo Generator Screenshot 2">
+                    <p class="projectDesc">Once the data was parsed by Sonnet, it was displayed here in a popup. You could alter, delete, or add new data in any of the sections (the picture doesn't show all the datapoints that were analyzed). Then once you felt good about the data that we get, you can generate a few logos.</p>
+                    <img class="projectImg" src="images/logoGenerator/logoGen3.png" alt="AI Logo Generator Screenshot 3">
                     <div class="projectBottom">
-                        <p class="projectDesc">Placeholder description for the AI Logo Generator project. Replace this with a real description later.</p>
+                        <p class="projectDesc">Once the logos were generated, there would be another popup that displayed around 5 to 7 logos of varying types (wordmark, pictoral, abstract, etc.) with a discription and reasoning. As you can see above, the some of the logos were rudimentary at best. There are definitely a few changes I can make, but for a quick day project to learn some new skills, I would say the output is better than I imagined.</p>
                         <a class="projectGithub button" href="#" target="_blank">
                             <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
                         </a>

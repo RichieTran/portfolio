@@ -28,6 +28,60 @@ body {
     grid-template-rows: 94vh 1vh 5vh;
 }
 
+/* Win95 Scrollbar */
+::-webkit-scrollbar{
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-track{
+    background-color: #c0c0c0;
+    background-image: url("data:image/svg+xml,%3Csvg width='2' height='2' viewBox='0 0 2 2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23c0c0c0'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23c0c0c0'/%3E%3Crect x='1' y='0' width='1' height='1' fill='%23ffffff'/%3E%3Crect x='0' y='1' width='1' height='1' fill='%23ffffff'/%3E%3C/svg%3E");
+    background-size: 2px 2px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+}
+
+::-webkit-scrollbar-button{
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    display: block;
+    height: 16px;
+    width: 16px;
+    background-size: 8px 8px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+::-webkit-scrollbar-button:vertical:decrement{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpolygon points='4,2 7,6 1,6' fill='black'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar-button:vertical:increment{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpolygon points='4,6 7,2 1,2' fill='black'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar-button:horizontal:decrement{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpolygon points='2,4 6,1 6,7' fill='black'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar-button:horizontal:increment{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpolygon points='6,4 2,1 2,7' fill='black'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar-corner{
+    background-color: #BDBBBD;
+}
+
 footer {
     grid-column: 1;
     grid-row: 3;
@@ -268,6 +322,7 @@ footer {
     font-family: "W95";
     display: grid;
     grid-template-rows: 35px auto;
+    overflow: hidden;
 }
 
 
@@ -1141,6 +1196,7 @@ footer {
     height: 100%;
     font-family: "W95";
     overflow-y: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
     gap: 10px;
 }
