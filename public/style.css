@@ -679,6 +679,13 @@ footer {
 .submenuContent{
     background-color: #BDBBBD;
     padding: 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+.submenuContent .menuItem{
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .settingsWindow content{
@@ -867,6 +874,8 @@ footer {
     border-right: 2px solid #F2F2F2;
     border-bottom: 2px solid #F2F2F2;
     margin: 2px;
+    display: flex;
+    align-items: flex-start;
 }
 
 .explorerStatusBar{
@@ -1025,8 +1034,8 @@ footer {
 }
 
 .explorerItem img{
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
 }
 
 .explorerItem p{
@@ -1079,8 +1088,7 @@ footer {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-top: auto;
-    padding-top: 10px;
+    padding-top: 8px;
 }
 
 .crossyRoadDesc{
@@ -1109,6 +1117,77 @@ footer {
 }
 
 .crossyRoadGithub img{
+    width: 20px;
+    height: 20px;
+}
+
+/* Logo Generator Window */
+#LogoGenWindow{
+    grid-template-rows: 35px 1fr;
+}
+
+#LogoGenWindow content{
+    display: flex;
+    overflow: hidden;
+}
+
+/* Shared Project Window Styles */
+.projectContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    width: 100%;
+    height: 100%;
+    font-family: "W95";
+    overflow-y: auto;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+.projectImg{
+    max-width: 100%;
+    object-fit: contain;
+    border: 2px solid #8F8F8F;
+    border-right: 2px solid #F2F2F2;
+    border-bottom: 2px solid #F2F2F2;
+}
+
+.projectBottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 8px;
+}
+
+.projectDesc{
+    font-size: 14px;
+    text-align: left;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.projectGithub{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-family: "W95";
+    font-size: 14px;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    cursor: url('images/hoverCursor.png'), auto;
+    text-decoration: none;
+    color: black;
+    filter: drop-shadow(1px 1px 1px black);
+    flex-shrink: 0;
+}
+
+.projectGithub img{
     width: 20px;
     height: 20px;
 }

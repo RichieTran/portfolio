@@ -111,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function(){
                             <button class="menuItem button" id="menuCrossyRoad">
                                 <img src="images/CrossyRoad.png" alt="">Crossy Road
                             </button>
+                            <button class="menuItem button" id="menuLogoGen">
+                                <img src="images/logoGenerator/logoGen.png" alt="">AI Logo Generator
+                            </button>
                         </div>
                     `;
 
@@ -125,6 +128,14 @@ document.addEventListener('DOMContentLoaded', function(){
                         e.stopPropagation();
                         closeStartMenu();
                         openCrossyRoadWindow();
+                        bringWindowToFront('CrossyRoadWindow', 'CrossyRoadTaskbarItem');
+                    });
+
+                    projectsSubmenu.querySelector('#menuLogoGen').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openLogoGenWindow();
+                        bringWindowToFront('LogoGenWindow', 'LogoGenTaskbarItem');
                     });
                 }
             });
@@ -445,6 +456,20 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     });
 
+    function bringWindowToFront(winId, taskbarId){
+        const win = document.getElementById(winId);
+        if(!win || !win.classList.contains('background')) return;
+        const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+        if(lt) lt.classList.remove('active');
+        lastOpened.classList.add('background');
+        win.classList.remove('background');
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+        lastOpened = win;
+        const taskbarItem = document.getElementById(taskbarId);
+        if(taskbarItem) taskbarItem.classList.add('active');
+    }
+
     function openCrossyRoadWindow(){
         if(document.getElementById('CrossyRoadWindow')) return;
 
@@ -453,12 +478,12 @@ document.addEventListener('DOMContentLoaded', function(){
         win.className = 'window';
 
         const maxX = Math.max(0, window.innerWidth - 750);
-        const maxY = Math.max(0, window.innerHeight - 550);
+        const maxY = Math.max(0, window.innerHeight - 525);
         const randomX = Math.floor(Math.random() * maxX);
         const randomY = Math.floor(Math.random() * maxY);
 
         win.style.width = '750px';
-        win.style.height = '550px';
+        win.style.height = '525px';
         win.style.left = randomX + 'px';
         win.style.top = randomY + 'px';
 
@@ -474,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     <div class="crossyRoadBottom">
                         <p class="crossyRoadDesc">A Crossy Road clone built with JavaScript and HTML5 Canvas. Navigate your chicken across busy roads and rivers! This was built in a hard-stop one hour challenge to see how well I could implement AI into my workflow. Although there are some features I still want to add, I'm proud of how much I could accomplish in just one hour!</p>
                         <a class="crossyRoadGithub button" href="https://github.com/RichieTran/113-HW2-CrossyRoad/" target="_blank">
-                            <img src="images/GitHubLogo.png" alt="GitHub"> GitHub
+                            <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
                         </a>
                     </div>
                 </div>
@@ -499,6 +524,93 @@ document.addEventListener('DOMContentLoaded', function(){
         taskbarItem.className = 'taskbarItem active';
         taskbarItem.id = 'CrossyRoadTaskbarItem';
         taskbarItem.innerHTML = '<img class="appImg" src="images/CrossyRoad.png" alt=""><span>Crossy Road</span>';
+
+        taskbarItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            if(win.classList.contains('background')){
+                if(lastOpened){
+                    lastOpened.classList.add('background');
+                    const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lt) lt.classList.remove('active');
+                }
+                win.classList.remove('background');
+                taskbarItem.classList.add('active');
+                lastOpened = win;
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+            }
+        });
+
+        taskbarItems.appendChild(taskbarItem);
+        dragElement(win);
+
+        const closeBtn = win.querySelector('close');
+        closeBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            win.remove();
+            taskbarItem.remove();
+            if(lastOpened === win){
+                lastOpened = null;
+            }
+        });
+    }
+
+    function openLogoGenWindow(){
+        if(document.getElementById('LogoGenWindow')) return;
+
+        const win = document.createElement('span');
+        win.id = 'LogoGenWindow';
+        win.className = 'window';
+
+        const maxX = Math.max(0, window.innerWidth - 750);
+        const maxY = Math.max(0, window.innerHeight - 525);
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        win.style.width = '750px';
+        win.style.height = '525px';
+        win.style.left = randomX + 'px';
+        win.style.top = randomY + 'px';
+
+        win.innerHTML = `
+            <header id="windowHeader">
+                <icon><img class="appImg" src="images/logoGenerator/logoGen.png" alt="AI Logo Generator"></icon>
+                <p>AI Logo Generator</p>
+                <close></close>
+            </header>
+            <content>
+                <div class="projectContainer">
+                    <img class="projectImg" src="images/placeholder1.png" alt="AI Logo Generator Screenshot 1">
+                    <img class="projectImg" src="images/placeholder2.png" alt="AI Logo Generator Screenshot 2">
+                    <img class="projectImg" src="images/placeholder3.png" alt="AI Logo Generator Screenshot 3">
+                    <div class="projectBottom">
+                        <p class="projectDesc">Placeholder description for the AI Logo Generator project. Replace this with a real description later.</p>
+                        <a class="projectGithub button" href="#" target="_blank">
+                            <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
+                        </a>
+                    </div>
+                </div>
+            </content>
+        `;
+
+        document.body.appendChild(win);
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+
+        if(lastOpened){
+            lastOpened.classList.add('background');
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
+        }
+        lastOpened = win;
+
+        const taskbarItems = document.getElementById('taskbarItems');
+        const taskbarItem = document.createElement('button');
+        taskbarItem.className = 'taskbarItem active';
+        taskbarItem.id = 'LogoGenTaskbarItem';
+        taskbarItem.innerHTML = '<img class="appImg" src="images/logoGenerator/logoGen.png" alt=""><span>AI Logo Generator</span>';
 
         taskbarItem.addEventListener('click', function(e){
             e.stopPropagation();
@@ -629,9 +741,13 @@ document.addEventListener('DOMContentLoaded', function(){
                                 <img src="images/CrossyRoad.png" alt="Crossy Road">
                                 <p>Crossy Road</p>
                             </span>
+                            <span class="explorerItem" id="LogoGenItem">
+                                <img src="images/logoGenerator/logoGen.png" alt="AI Logo Generator">
+                                <p>AI Logo Generator</p>
+                            </span>
                         </div>
                         <div class="explorerStatusBar">
-                            <span class="statusLeft">1 object(s)</span>
+                            <span class="statusLeft">2 object(s)</span>
                             <span class="statusRight"></span>
                         </div>
                     `;
@@ -657,6 +773,12 @@ document.addEventListener('DOMContentLoaded', function(){
                         if(item && item.id === 'CrossyRoadItem'){
                             e.stopPropagation();
                             openCrossyRoadWindow();
+                            bringWindowToFront('CrossyRoadWindow', 'CrossyRoadTaskbarItem');
+                        }
+                        if(item && item.id === 'LogoGenItem'){
+                            e.stopPropagation();
+                            openLogoGenWindow();
+                            bringWindowToFront('LogoGenWindow', 'LogoGenTaskbarItem');
                         }
                     });
                 }
@@ -860,20 +982,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 });
             }
             else if(document.getElementById(app.id + "Window").classList.contains('background')){
-                const win = document.getElementById(app.id + "Window");
-                const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
-                if(lastTaskbarItem){
-                    lastTaskbarItem.classList.remove('active');
-                }
-                lastOpened.classList.add('background');
-                win.classList.remove('background');
-                win.style.zIndex = zLevel;
-                zLevel += 1;
-                lastOpened = win;
-                const taskbarItem = document.getElementById(app.id + 'TaskbarItem');
-                if(taskbarItem){
-                    taskbarItem.classList.add('active');
-                }
+                bringWindowToFront(app.id + "Window", app.id + 'TaskbarItem');
             }
         }
     });
