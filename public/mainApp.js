@@ -114,6 +114,9 @@ document.addEventListener('DOMContentLoaded', function(){
                             <button class="menuItem button" id="menuLogoGen">
                                 <img src="images/logoGenerator/logoGen.png" alt="">AI Logo Generator
                             </button>
+                            <button class="menuItem button" id="menuMyEyes">
+                                <img src="images/MyEyes/MyEyes.png" alt="">MyEyes
+                            </button>
                         </div>
                     `;
 
@@ -136,6 +139,13 @@ document.addEventListener('DOMContentLoaded', function(){
                         closeStartMenu();
                         openLogoGenWindow();
                         bringWindowToFront('LogoGenWindow', 'LogoGenTaskbarItem');
+                    });
+
+                    projectsSubmenu.querySelector('#menuMyEyes').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openMyEyesWindow();
+                        bringWindowToFront('MyEyesWindow', 'MyEyesTaskbarItem');
                     });
                 }
             });
@@ -645,6 +655,97 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 
+    function openMyEyesWindow(){
+        if(document.getElementById('MyEyesWindow')) return;
+
+        const win = document.createElement('span');
+        win.id = 'MyEyesWindow';
+        win.className = 'window';
+
+        const maxX = Math.max(0, window.innerWidth - 750);
+        const maxY = Math.max(0, window.innerHeight - 525);
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        win.style.width = '750px';
+        win.style.height = '525px';
+        win.style.left = randomX + 'px';
+        win.style.top = randomY + 'px';
+
+        win.innerHTML = `
+            <header id="windowHeader">
+                <icon><img class="appImg" src="images/MyEyes/MyEyes.png" alt="MyEyes"></icon>
+                <p>MyEyes</p>
+                <close></close>
+            </header>
+            <content>
+                <div class="projectContainer">
+                    <p class="projectDesc">A "virtual walking stick" iOS app that assists visually impaired users with navigating everyday life. I created this for Tartan Hacks with a few of my friends, and we used Swift, Python/Flask, and YoloV8 via CoreML.</p>
+                    <img class="projectImg" src="images/MyEyes/MyEyes1.png" alt="MyEyes Screenshot 1">
+                    <p class="projectDesc">We created a custom urgency-weighted loss function, which assigned higher danger values to different objects (closer an more dangerous). This helped us choose which obstacles the app alert the user of.</p>
+                    <img class="projectImg" src="images/MyEyes/MyEyes3.jpeg" alt="MyEyes Screenshot 3">
+                    <img class="projectImg" src="images/MyEyes/MyEyes2.jpeg" alt="MyEyes Screenshot 2">
+                    <p class="projectDesc">MyEyes used AVSpeechSynthesizer to tell users the obstacles that were selected from our weighted loss function. Though in everyday life, there are sometimes hazards that are unpredictable, but dangerous nonetheless; for example, a person turning a corner or a car stopping on a crosswalk, we wanted our app to be able to alert users of these obstacles too! So we used the Lidar sensor on iPhones to play an alarm noise once there was an object within a few feet of the sensor, allowing for our users' safety in unpredictable circumstances.</p>
+                    <img class="projectImg" src="images/MyEyes/MyEyes4.jpg" alt="MyEyes Screenshot 4">
+                    <div class="projectBottom">
+                        <p class="projectDesc">MyEyes was so fun to create, learning new tools and building something that can actually help others reinforced my passion for creating accessible tech.</p>
+                        <a class="projectGithub button" href="https://github.com/alberttluo/myEyes" target="_blank">
+                            <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
+                        </a>
+                    </div>
+                </div>
+            </content>
+        `;
+
+        document.body.appendChild(win);
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+
+        if(lastOpened){
+            lastOpened.classList.add('background');
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
+        }
+        lastOpened = win;
+
+        const taskbarItems = document.getElementById('taskbarItems');
+        const taskbarItem = document.createElement('button');
+        taskbarItem.className = 'taskbarItem active';
+        taskbarItem.id = 'MyEyesTaskbarItem';
+        taskbarItem.innerHTML = '<img class="appImg" src="images/MyEyes/MyEyes.png" alt=""><span>MyEyes</span>';
+
+        taskbarItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            if(win.classList.contains('background')){
+                if(lastOpened){
+                    lastOpened.classList.add('background');
+                    const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lt) lt.classList.remove('active');
+                }
+                win.classList.remove('background');
+                taskbarItem.classList.add('active');
+                lastOpened = win;
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+            }
+        });
+
+        taskbarItems.appendChild(taskbarItem);
+        dragElement(win);
+
+        const closeBtn = win.querySelector('close');
+        closeBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            win.remove();
+            taskbarItem.remove();
+            if(lastOpened === win){
+                lastOpened = null;
+            }
+        });
+    }
+
     const appGrid = document.querySelector('.appGrid');
 
     appGrid.addEventListener('click', function(element){
@@ -740,17 +841,21 @@ document.addEventListener('DOMContentLoaded', function(){
                             <span class="explorerMenuItem"><u>H</u>elp</span>
                         </div>
                         <div class="explorerContent">
-                            <span class="explorerItem" id="CrossyRoadItem">
-                                <img src="images/CrossyRoad.png" alt="Crossy Road">
-                                <p>Crossy Road</p>
+                            <span class="explorerItem" id="MyEyesItem">
+                                <img src="images/MyEyes/MyEyes.png" alt="MyEyes">
+                                <p>MyEyes</p>
                             </span>
                             <span class="explorerItem" id="LogoGenItem">
                                 <img src="images/logoGenerator/logoGen.png" alt="AI Logo Generator">
                                 <p>AI Logo Generator</p>
                             </span>
+                            <span class="explorerItem" id="CrossyRoadItem">
+                                <img src="images/CrossyRoad.png" alt="Crossy Road">
+                                <p>Crossy Road</p>
+                            </span>
                         </div>
                         <div class="explorerStatusBar">
-                            <span class="statusLeft">2 object(s)</span>
+                            <span class="statusLeft">3 object(s)</span>
                             <span class="statusRight"></span>
                         </div>
                     `;
@@ -782,6 +887,11 @@ document.addEventListener('DOMContentLoaded', function(){
                             e.stopPropagation();
                             openLogoGenWindow();
                             bringWindowToFront('LogoGenWindow', 'LogoGenTaskbarItem');
+                        }
+                        if(item && item.id === 'MyEyesItem'){
+                            e.stopPropagation();
+                            openMyEyesWindow();
+                            bringWindowToFront('MyEyesWindow', 'MyEyesTaskbarItem');
                         }
                     });
                 }

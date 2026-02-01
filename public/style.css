@@ -1186,6 +1186,16 @@ footer {
     overflow: hidden;
 }
 
+/* MyEyes Window */
+#MyEyesWindow{
+    grid-template-rows: 35px 1fr;
+}
+
+#MyEyesWindow content{
+    display: flex;
+    overflow: hidden;
+}
+
 /* Shared Project Window Styles */
 .projectContainer{
     display: flex;
