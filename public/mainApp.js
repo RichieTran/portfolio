@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
             document.body.appendChild(startMenu);
 
-            // Used Claude to create an event listener for resume button on the start menu
             // Projects submenu hover handler
             const projectsBtn = startMenu.querySelector('#menuProjects');
             let projectsSubmenu = null;
@@ -102,12 +101,18 @@ document.addEventListener('DOMContentLoaded', function(){
                 closeStartMenu();
             });
 
-            // Used Claude to create submenu for projects start menu button
+            // Submenu for projects start menu button
             projectsBtn.addEventListener('mouseenter', function(){
                 if(!projectsSubmenu){
                     projectsSubmenu = document.createElement('div');
                     projectsSubmenu.className = 'submenu';
-                    projectsSubmenu.innerHTML = `<div class="submenuContent"></div>`;
+                    projectsSubmenu.innerHTML = `
+                        <div class="submenuContent">
+                            <button class="menuItem button" id="menuCrossyRoad">
+                                <img src="images/CrossyRoad.png" alt="">Crossy Road
+                            </button>
+                        </div>
+                    `;
 
                     const rect = projectsBtn.getBoundingClientRect();
                     projectsSubmenu.style.position = 'absolute';
@@ -115,6 +120,12 @@ document.addEventListener('DOMContentLoaded', function(){
                     projectsSubmenu.style.bottom = (window.innerHeight - rect.bottom) + 'px';
 
                     document.body.appendChild(projectsSubmenu);
+
+                    projectsSubmenu.querySelector('#menuCrossyRoad').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openCrossyRoadWindow();
+                    });
                 }
             });
 
@@ -126,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 }, 100);
             });
 
-            // Shut Down button click handler, used Claude for basic HTML
+            // Shut Down button click handler
             startMenu.querySelector('#menuShutDown').addEventListener('click', function(e){
                 e.stopPropagation();
                 closeStartMenu();
@@ -188,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 }
             });
 
-            // Settings button click handler, styling made with Claude, first color and no logo template from Claude
+            // Settings button click handler
             startMenu.querySelector('#menuSettings').addEventListener('click', function(e){
                 e.stopPropagation();
                 if(!document.getElementById('SettingsWindow')){
@@ -434,6 +445,91 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     });
 
+    function openCrossyRoadWindow(){
+        if(document.getElementById('CrossyRoadWindow')) return;
+
+        const win = document.createElement('span');
+        win.id = 'CrossyRoadWindow';
+        win.className = 'window';
+
+        const maxX = Math.max(0, window.innerWidth - 750);
+        const maxY = Math.max(0, window.innerHeight - 550);
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        win.style.width = '750px';
+        win.style.height = '550px';
+        win.style.left = randomX + 'px';
+        win.style.top = randomY + 'px';
+
+        win.innerHTML = `
+            <header id="windowHeader">
+                <icon><img class="appImg" src="images/CrossyRoad.png" alt="Crossy Road"></icon>
+                <p>Crossy Road</p>
+                <close></close>
+            </header>
+            <content>
+                <div class="crossyRoadContainer">
+                    <img class="crossyRoadImg" src="images/CrossyRoad1.png" alt="Crossy Road">
+                    <div class="crossyRoadBottom">
+                        <p class="crossyRoadDesc">A Crossy Road clone built with JavaScript and HTML5 Canvas. Navigate your chicken across busy roads and rivers! This was built in a hard-stop one hour challenge to see how well I could implement AI into my workflow. Although there are some features I still want to add, I'm proud of how much I could accomplish in just one hour!</p>
+                        <a class="crossyRoadGithub button" href="https://github.com/RichieTran/113-HW2-CrossyRoad/" target="_blank">
+                            <img src="images/GitHubLogo.png" alt="GitHub"> GitHub
+                        </a>
+                    </div>
+                </div>
+            </content>
+        `;
+
+        document.body.appendChild(win);
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+
+        if(lastOpened){
+            lastOpened.classList.add('background');
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
+        }
+        lastOpened = win;
+
+        const taskbarItems = document.getElementById('taskbarItems');
+        const taskbarItem = document.createElement('button');
+        taskbarItem.className = 'taskbarItem active';
+        taskbarItem.id = 'CrossyRoadTaskbarItem';
+        taskbarItem.innerHTML = '<img class="appImg" src="images/CrossyRoad.png" alt=""><span>Crossy Road</span>';
+
+        taskbarItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            if(win.classList.contains('background')){
+                if(lastOpened){
+                    lastOpened.classList.add('background');
+                    const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lt) lt.classList.remove('active');
+                }
+                win.classList.remove('background');
+                taskbarItem.classList.add('active');
+                lastOpened = win;
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+            }
+        });
+
+        taskbarItems.appendChild(taskbarItem);
+        dragElement(win);
+
+        const closeBtn = win.querySelector('close');
+        closeBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            win.remove();
+            taskbarItem.remove();
+            if(lastOpened === win){
+                lastOpened = null;
+            }
+        });
+    }
+
     const appGrid = document.querySelector('.appGrid');
 
     appGrid.addEventListener('click', function(element){
@@ -528,12 +624,41 @@ document.addEventListener('DOMContentLoaded', function(){
                             <span class="explorerMenuItem"><u>V</u>iew</span>
                             <span class="explorerMenuItem"><u>H</u>elp</span>
                         </div>
-                        <div class="explorerContent"></div>
+                        <div class="explorerContent">
+                            <span class="explorerItem" id="CrossyRoadItem">
+                                <img src="images/CrossyRoad.png" alt="Crossy Road">
+                                <p>Crossy Road</p>
+                            </span>
+                        </div>
                         <div class="explorerStatusBar">
-                            <span class="statusLeft">0 object(s)</span>
+                            <span class="statusLeft">1 object(s)</span>
                             <span class="statusRight"></span>
                         </div>
                     `;
+
+                    let explorerLastClicked = null;
+                    content.querySelector('.explorerContent').addEventListener('click', function(e){
+                        const item = e.target.closest('.explorerItem');
+                        if(item){
+                            e.stopPropagation();
+                            if(explorerLastClicked){
+                                explorerLastClicked.classList.remove('selected');
+                            }
+                            item.classList.add('selected');
+                            explorerLastClicked = item;
+                        } else if(explorerLastClicked){
+                            explorerLastClicked.classList.remove('selected');
+                            explorerLastClicked = null;
+                        }
+                    });
+
+                    content.querySelector('.explorerContent').addEventListener('dblclick', function(e){
+                        const item = e.target.closest('.explorerItem');
+                        if(item && item.id === 'CrossyRoadItem'){
+                            e.stopPropagation();
+                            openCrossyRoadWindow();
+                        }
+                    });
                 }
 
                 if(app.id === "Socials"){
@@ -678,6 +803,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                     setupEmailForm();
                 }
+
 
                 document.body.appendChild(win);
                 app.classList.add('opened');

@@ -8,7 +8,6 @@
     src: url("fonts/w95fa.woff") format("woff");
 }
 
-/* Used Claude to add better responsiveness to smaller screens */
 @media screen and (max-width: 767px) {
     body {
         overflow-x: auto;
@@ -678,12 +677,10 @@ footer {
 }
 
 .submenuContent{
-    width: 150px;
-    height: 120px;
     background-color: #BDBBBD;
+    padding: 3px;
 }
 
-/* Settings Window, used Claude for styling most the window */
 .settingsWindow content{
     display: flex;
     flex-direction: column;
@@ -838,7 +835,6 @@ footer {
     cursor: url('images/hoverCursor.png'), auto;
 }
 
-/* Explorer Window, used Claude to mirror a file explorer from win98 */
 .explorerWindow content{
     display: flex;
     flex-direction: column;
@@ -903,7 +899,6 @@ footer {
     margin-right: 2px;
 }
 
-/* Shut Down Window, styled using Claude */
 .shutdownWindow header{
     grid-row: 1;
     background-color: #000080;
@@ -1014,4 +1009,106 @@ footer {
     height: 100vh;
     background-color: black;
     z-index: 99999;
+}
+
+/* Explorer Items */
+.explorerItem{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+    cursor: url('images/hoverCursor.png'), auto;
+    user-select: none;
+    width: 70px;
+    text-align: center;
+}
+
+.explorerItem img{
+    width: 54px;
+    height: 54px;
+}
+
+.explorerItem p{
+    font-family: "W95";
+    font-size: 12px;
+}
+
+.explorerItem.selected{
+    background-color: #000080;
+    color: white;
+}
+
+.explorerItem.selected img{
+    filter: brightness(0.7);
+}
+
+#CrossyRoadWindow{
+    grid-template-rows: 35px 1fr;
+}
+
+#CrossyRoadWindow content{
+    display: flex;
+    overflow: hidden;
+}
+
+/* Crossy Road Window */
+.crossyRoadContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    width: 100%;
+    height: 100%;
+    font-family: "W95";
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.crossyRoadImg{
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border: 2px solid #8F8F8F;
+    border-right: 2px solid #F2F2F2;
+    border-bottom: 2px solid #F2F2F2;
+}
+
+.crossyRoadBottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.crossyRoadDesc{
+    font-size: 14px;
+    text-align: left;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.crossyRoadGithub{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-family: "W95";
+    font-size: 14px;
+    background-color: #BDBBBD;
+    border-top: 2px solid #F2F2F2;
+    border-left: 2px solid #F2F2F2;
+    border-bottom: 2px solid #8F8F8F;
+    border-right: 2px solid #8F8F8F;
+    cursor: url('images/hoverCursor.png'), auto;
+    text-decoration: none;
+    color: black;
+    filter: drop-shadow(1px 1px 1px black);
+}
+
+.crossyRoadGithub img{
+    width: 20px;
+    height: 20px;
 }
