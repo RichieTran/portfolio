@@ -588,7 +588,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     <img class="projectImg" src="images/logoGenerator/logoGen3.png" alt="AI Logo Generator Screenshot 3">
                     <div class="projectBottom">
                         <p class="projectDesc">Once the logos were generated, there would be another popup that displayed around 5 to 7 logos of varying types (wordmark, pictoral, abstract, etc.) with a discription and reasoning. As you can see above, the some of the logos were rudimentary at best. There are definitely a few changes I can make, but for a quick day project to learn some new skills, I would say the output is better than I imagined.</p>
-                        <a class="projectGithub button" href="#" target="_blank">
+                        <a class="projectGithub button" href="https://github.com/RichieTran/logoGenerator" target="_blank">
                             <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
                         </a>
                     </div>
