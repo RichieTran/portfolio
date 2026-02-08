@@ -108,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function(){
                     projectsSubmenu.className = 'submenu';
                     projectsSubmenu.innerHTML = `
                         <div class="submenuContent">
+                            <button class="menuItem button" id="menuMoodMovie">
+                                <img src="images/MoodMovie/moodMovie.png" alt="">MoodMovie
+                            </button>
                             <button class="menuItem button" id="menuCrossyRoad">
                                 <img src="images/CrossyRoad.png" alt="">Crossy Road
                             </button>
@@ -116,9 +119,6 @@ document.addEventListener('DOMContentLoaded', function(){
                             </button>
                             <button class="menuItem button" id="menuMyEyes">
                                 <img src="images/MyEyes/MyEyes.png" alt="">MyEyes
-                            </button>
-                            <button class="menuItem button" id="menuMoodMovie">
-                                <img src="images/MoodMovie/moodMovie.png" alt="">MoodMovie
                             </button>
                         </div>
                     `;
@@ -129,6 +129,13 @@ document.addEventListener('DOMContentLoaded', function(){
                     projectsSubmenu.style.bottom = (window.innerHeight - rect.bottom) + 'px';
 
                     document.body.appendChild(projectsSubmenu);
+
+                    projectsSubmenu.querySelector('#menuMoodMovie').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openMoodMovieWindow();
+                        bringWindowToFront('MoodMovieWindow', 'MoodMovieTaskbarItem');
+                    });
 
                     projectsSubmenu.querySelector('#menuCrossyRoad').addEventListener('click', function(e){
                         e.stopPropagation();
@@ -149,13 +156,6 @@ document.addEventListener('DOMContentLoaded', function(){
                         closeStartMenu();
                         openMyEyesWindow();
                         bringWindowToFront('MyEyesWindow', 'MyEyesTaskbarItem');
-                    });
-
-                    projectsSubmenu.querySelector('#menuMoodMovie').addEventListener('click', function(e){
-                        e.stopPropagation();
-                        closeStartMenu();
-                        openMoodMovieWindow();
-                        bringWindowToFront('MoodMovieWindow', 'MoodMovieTaskbarItem');
                     });
                 }
             });
@@ -349,6 +349,35 @@ document.addEventListener('DOMContentLoaded', function(){
                             document.getElementById(tab.dataset.tab === 'wallpaper' ? 'wallpaperPanel' : 'bgiconPanel').classList.remove('hidden');
                         });
                     });
+
+                    // Initialize icon list selection based on current state
+                    const backgroundImg = document.querySelector('.backgroundImg');
+                    const backgroundIcon = document.getElementById('background');
+                    const backgroundText = backgroundImg.querySelector('p');
+                    const iconOptions = win.querySelectorAll('#iconList .settingsOption');
+                    const previewIcon = win.querySelector('#iconPreview .previewIcon');
+
+                    // Remove default selection
+                    iconOptions.forEach(o => o.classList.remove('selected'));
+
+                    // Determine current state and select appropriate option
+                    if(backgroundImg.style.display === 'none'){
+                        // None selected
+                        win.querySelector('#iconList .settingsOption[data-value="removeall"]').classList.add('selected');
+                        previewIcon.style.display = 'none';
+                    } else if(backgroundIcon.style.display === 'none'){
+                        // Text Only
+                        win.querySelector('#iconList .settingsOption[data-value="none"]').classList.add('selected');
+                        previewIcon.style.display = 'none';
+                    } else if(backgroundText.style.display === 'none'){
+                        // Logo Only
+                        win.querySelector('#iconList .settingsOption[data-value="logoonly"]').classList.add('selected');
+                        previewIcon.style.display = 'block';
+                    } else {
+                        // Default (both)
+                        win.querySelector('#iconList .settingsOption[data-value="images/Background.png"]').classList.add('selected');
+                        previewIcon.style.display = 'block';
+                    }
 
                     // Wallpaper option selection
                     win.querySelectorAll('#wallpaperList .settingsOption').forEach(function(option){
