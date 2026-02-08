@@ -117,6 +117,9 @@ document.addEventListener('DOMContentLoaded', function(){
                             <button class="menuItem button" id="menuMyEyes">
                                 <img src="images/MyEyes/MyEyes.png" alt="">MyEyes
                             </button>
+                            <button class="menuItem button" id="menuMoodMovie">
+                                <img src="images/MoodMovie/moodMovie.png" alt="">MoodMovie
+                            </button>
                         </div>
                     `;
 
@@ -146,6 +149,13 @@ document.addEventListener('DOMContentLoaded', function(){
                         closeStartMenu();
                         openMyEyesWindow();
                         bringWindowToFront('MyEyesWindow', 'MyEyesTaskbarItem');
+                    });
+
+                    projectsSubmenu.querySelector('#menuMoodMovie').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openMoodMovieWindow();
+                        bringWindowToFront('MoodMovieWindow', 'MoodMovieTaskbarItem');
                     });
                 }
             });
@@ -746,6 +756,92 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 
+    function openMoodMovieWindow(){
+        if(document.getElementById('MoodMovieWindow')) return;
+
+        const win = document.createElement('span');
+        win.id = 'MoodMovieWindow';
+        win.className = 'window';
+
+        const maxX = Math.max(0, window.innerWidth - 750);
+        const maxY = Math.max(0, window.innerHeight - 525);
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        win.style.width = '750px';
+        win.style.height = '525px';
+        win.style.left = randomX + 'px';
+        win.style.top = randomY + 'px';
+
+        win.innerHTML = `
+            <header id="windowHeader">
+                <icon><img class="appImg" src="images/MoodMovie/moodMovie.png" alt="MoodMovie"></icon>
+                <p>MoodMovie</p>
+                <close></close>
+            </header>
+            <content>
+                <div class="projectContainer">
+                    <p class="projectDesc">I wanted to explore using APIs more and I like watching movies, so that led me to create a small website for myself to find movies to watch. MoodMovies is a mood-based movie recommendation system, a Python web application that recommends movies based on your mood, preferences, and similar movies using TMDB and OMDb APIs. Features include movie recommendations based on mood, recommendations based on preferences (genre, year, etc.), similar movie recommendations, and detailed movie information from both TMDB and OMDb. (Note TMDB is user ran, so many of the movies under the feelings sections are very unknown fan-made or indie movies with little-to no ratings.</p>
+                    <img class="projectImg" src="images/MoodMovie/moodMovie1.png" alt="MoodMovie Screenshot">
+                    <div class="projectBottom">
+                        <p class="projectDesc">Check out the live site: <a href="https://mood-movies-ebon.vercel.app/" target="_blank">here</a>!</p>
+                        <a class="projectGithub button" href="https://github.com/RichieTran/MoodMovies" target="_blank">
+                            <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
+                        </a>
+                    </div>
+                </div>
+            </content>
+        `;
+
+        document.body.appendChild(win);
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+
+        if(lastOpened){
+            lastOpened.classList.add('background');
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
+        }
+        lastOpened = win;
+
+        const taskbarItems = document.getElementById('taskbarItems');
+        const taskbarItem = document.createElement('button');
+        taskbarItem.className = 'taskbarItem active';
+        taskbarItem.id = 'MoodMovieTaskbarItem';
+        taskbarItem.innerHTML = '<img class="appImg" src="images/MoodMovie/moodMovie.png" alt=""><span>MoodMovie</span>';
+
+        taskbarItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            if(win.classList.contains('background')){
+                if(lastOpened){
+                    lastOpened.classList.add('background');
+                    const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lt) lt.classList.remove('active');
+                }
+                win.classList.remove('background');
+                taskbarItem.classList.add('active');
+                lastOpened = win;
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+            }
+        });
+
+        taskbarItems.appendChild(taskbarItem);
+        dragElement(win);
+
+        const closeBtn = win.querySelector('close');
+        closeBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            win.remove();
+            taskbarItem.remove();
+            if(lastOpened === win){
+                lastOpened = null;
+            }
+        });
+    }
+
     const appGrid = document.querySelector('.appGrid');
 
     appGrid.addEventListener('click', function(element){
@@ -849,13 +945,17 @@ document.addEventListener('DOMContentLoaded', function(){
                                 <img src="images/logoGenerator/logoGen.png" alt="AI Logo Generator">
                                 <p>AI Logo Generator</p>
                             </span>
+                            <span class="explorerItem" id="MoodMovieItem">
+                                <img src="images/MoodMovie/moodMovie.png" alt="MoodMovie">
+                                <p>MoodMovie</p>
+                            </span>
                             <span class="explorerItem" id="CrossyRoadItem">
                                 <img src="images/CrossyRoad.png" alt="Crossy Road">
                                 <p>Crossy Road</p>
                             </span>
                         </div>
                         <div class="explorerStatusBar">
-                            <span class="statusLeft">3 object(s)</span>
+                            <span class="statusLeft">4 object(s)</span>
                             <span class="statusRight"></span>
                         </div>
                     `;
@@ -892,6 +992,11 @@ document.addEventListener('DOMContentLoaded', function(){
                             e.stopPropagation();
                             openMyEyesWindow();
                             bringWindowToFront('MyEyesWindow', 'MyEyesTaskbarItem');
+                        }
+                        if(item && item.id === 'MoodMovieItem'){
+                            e.stopPropagation();
+                            openMoodMovieWindow();
+                            bringWindowToFront('MoodMovieWindow', 'MoodMovieTaskbarItem');
                         }
                     });
                 }
