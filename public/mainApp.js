@@ -909,6 +909,7 @@ document.addEventListener('DOMContentLoaded', function(){
             if(menu){
                 menu.remove();
             }
+            document.querySelectorAll('.submenu').forEach(sub => sub.remove());
             startButton.classList.remove('pressed');
             startMenuOpen = false;
         }
