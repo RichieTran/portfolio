@@ -1202,6 +1202,34 @@ document.addEventListener('DOMContentLoaded', function(){
                     setupEmailForm();
                 }
 
+                if(app.id === "MineSweeper"){
+                    win.classList.add('mineSweeperWindow');
+                    win.style.width = '500px';
+                    win.style.height = '550px';
+                    const content = win.querySelector('content');
+                    content.innerHTML = `
+                        <div class="mswTabs">
+                            <button class="mswTab active" data-tab="play">Play</button>
+                            <button class="mswTab" data-tab="leaderboard">Leaderboard</button>
+                        </div>
+                        <div class="mswPanel" id="mswPlayPanel">
+                            <p>Play tab — game coming soon!</p>
+                        </div>
+                        <div class="mswPanel hidden" id="mswLeaderboardPanel">
+                            <p>Leaderboard tab — coming soon!</p>
+                        </div>
+                    `;
+
+                    content.querySelectorAll('.mswTab').forEach(function(tab){
+                        tab.addEventListener('click', function(e){
+                            e.stopPropagation();
+                            content.querySelectorAll('.mswTab').forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            content.querySelectorAll('.mswPanel').forEach(p => p.classList.add('hidden'));
+                            document.getElementById('msw' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1) + 'Panel').classList.remove('hidden');
+                        });
+                    });
+                }
 
                 document.body.appendChild(win);
                 app.classList.add('opened');
