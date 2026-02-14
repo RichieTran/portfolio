@@ -1,0 +1,16 @@
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+
+const scoresRouter = require('./routes/scores');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors({ origin: process.env.ALLOWED_ORIGIN || '*' }));
+app.use(express.json());
+
+app.get('/', (req, res) => res.json({ status: 'ok' }));
+app.use('/scores', scoresRouter);
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
