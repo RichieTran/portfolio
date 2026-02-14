@@ -302,7 +302,7 @@ footer {
     padding-bottom: 5px;
 }
 
-#MineSweeperImg {
+.app #MineSweeperImg {
     width: 64px;
     height: 64px;
     object-fit: contain;
@@ -1235,51 +1235,9 @@ footer {
     box-sizing: border-box;
 }
 
-.mswTabs{
-    display: flex;
-    gap: 0;
-    margin-bottom: -2px;
-    z-index: 1;
-    position: relative;
-}
-
-.mswTab{
-    padding: 6px 16px;
-    font-family: "W95";
-    font-size: 14px;
-    background-color: #BDBBBD;
-    border-top: 2px solid #F2F2F2;
-    border-left: 2px solid #F2F2F2;
-    border-right: 2px solid #8F8F8F;
-    border-bottom: 2px solid #8F8F8F;
-    cursor: pointer;
-    position: relative;
-    top: 2px;
-}
-
-.mswTab.active{
-    border-bottom: 2px solid #BDBBBD;
-    top: 0;
-    z-index: 1;
-    outline: 1px dotted #000;
-    outline-offset: -8px;
-}
-
-.mswPanel{
-    border: 2px solid #8F8F8F;
-    border-top: 2px solid #F2F2F2;
-    border-left: 2px solid #F2F2F2;
-    padding: 15px;
-    background-color: #BDBBBD;
+.mineSweeperWindow .settingsPanel{
     flex: 1;
     overflow-y: auto;
-    font-family: "W95";
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-.mswPanel.hidden{
-    display: none;
 }
 
 /* Shared Project Window Styles */

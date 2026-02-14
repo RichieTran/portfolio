@@ -1208,25 +1208,25 @@ document.addEventListener('DOMContentLoaded', function(){
                     win.style.height = '550px';
                     const content = win.querySelector('content');
                     content.innerHTML = `
-                        <div class="mswTabs">
-                            <button class="mswTab active" data-tab="play">Play</button>
-                            <button class="mswTab" data-tab="leaderboard">Leaderboard</button>
+                        <div class="settingsTabs">
+                            <button class="settingsTab active" data-tab="mswPlay">Play</button>
+                            <button class="settingsTab" data-tab="mswLeaderboard">Leaderboard</button>
                         </div>
-                        <div class="mswPanel" id="mswPlayPanel">
+                        <div class="settingsPanel" id="mswPlayPanel">
                             <p>Play tab — game coming soon!</p>
                         </div>
-                        <div class="mswPanel hidden" id="mswLeaderboardPanel">
+                        <div class="settingsPanel hidden" id="mswLeaderboardPanel">
                             <p>Leaderboard tab — coming soon!</p>
                         </div>
                     `;
 
-                    content.querySelectorAll('.mswTab').forEach(function(tab){
+                    content.querySelectorAll('.settingsTab').forEach(function(tab){
                         tab.addEventListener('click', function(e){
                             e.stopPropagation();
-                            content.querySelectorAll('.mswTab').forEach(t => t.classList.remove('active'));
+                            content.querySelectorAll('.settingsTab').forEach(t => t.classList.remove('active'));
                             tab.classList.add('active');
-                            content.querySelectorAll('.mswPanel').forEach(p => p.classList.add('hidden'));
-                            document.getElementById('msw' + tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1) + 'Panel').classList.remove('hidden');
+                            content.querySelectorAll('.settingsPanel').forEach(p => p.classList.add('hidden'));
+                            document.getElementById(tab.dataset.tab + 'Panel').classList.remove('hidden');
                         });
                     });
                 }
