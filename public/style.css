@@ -1239,6 +1239,41 @@ footer {
     flex: 1;
     overflow-y: auto;
 }
+.mswLeaderboardControls{
+    padding: 8px 0;
+    font-size: 13px;
+}
+.mswLeaderboardControls select{
+    font-family: inherit;
+    font-size: 13px;
+    background-color: white;
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080;
+    padding: 1px 4px;
+    cursor: url('images/hoverCursor.png'), auto;
+    outline: none;
+}
+.mswLeaderboardControls select:focus{
+    border-color: #000080;
+}
+.mswLeaderboardTable{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.mswLeaderboardTable th,
+.mswLeaderboardTable td{
+    border: 1px solid #808080;
+    padding: 4px 8px;
+    text-align: left;
+}
+.mswLeaderboardTable thead{
+    background: #000080;
+    color: white;
+}
+.mswLeaderboardTable tbody tr:nth-child(even){
+    background: #d4d0c8;
+}
 
 /* Shared Project Window Styles */
 .projectContainer{

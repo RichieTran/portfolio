@@ -1216,9 +1216,48 @@ document.addEventListener('DOMContentLoaded', function(){
                             <p>Play tab — game coming soon!</p>
                         </div>
                         <div class="settingsPanel hidden" id="mswLeaderboardPanel">
-                            <p>Leaderboard tab — coming soon!</p>
+                            <div class="mswLeaderboardControls">
+                                <label>Difficulty:
+                                    <select id="mswDifficultySelect">
+                                        <option value="easy">Easy</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <table class="mswLeaderboardTable">
+                                <thead>
+                                    <tr><th>#</th><th>Name</th><th>Time</th><th>Date</th></tr>
+                                </thead>
+                                <tbody id="mswLeaderboardBody">
+                                    <tr><td colspan="4">Loading...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     `;
+
+                    const API = 'https://portfoliobackend-luv4.onrender.com';
+
+                    async function loadLeaderboard(difficulty) {
+                        const tbody = content.querySelector('#mswLeaderboardBody');
+                        tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+                        try {
+                            const rows = await fetch(`${API}/scores?difficulty=${difficulty}`).then(r => r.json());
+                            if (!rows.length) {
+                                tbody.innerHTML = '<tr><td colspan="4">No scores yet!</td></tr>';
+                                return;
+                            }
+                            tbody.innerHTML = rows.map((row, i) => {
+                                const mins = Math.floor(row.time_seconds / 60);
+                                const secs = row.time_seconds % 60;
+                                const time = `${mins}:${secs.toString().padStart(2, '0')}`;
+                                const date = new Date(row.created_at).toLocaleDateString();
+                                return `<tr><td>${i + 1}</td><td>${row.name}</td><td>${time}</td><td>${date}</td></tr>`;
+                            }).join('');
+                        } catch(err) {
+                            tbody.innerHTML = '<tr><td colspan="4">Failed to load scores.</td></tr>';
+                        }
+                    }
 
                     content.querySelectorAll('.settingsTab').forEach(function(tab){
                         tab.addEventListener('click', function(e){
@@ -1227,7 +1266,15 @@ document.addEventListener('DOMContentLoaded', function(){
                             tab.classList.add('active');
                             content.querySelectorAll('.settingsPanel').forEach(p => p.classList.add('hidden'));
                             document.getElementById(tab.dataset.tab + 'Panel').classList.remove('hidden');
+                            if(tab.dataset.tab === 'mswLeaderboard'){
+                                const sel = content.querySelector('#mswDifficultySelect');
+                                loadLeaderboard(sel.value);
+                            }
                         });
+                    });
+
+                    content.querySelector('#mswDifficultySelect').addEventListener('change', function(){
+                        loadLeaderboard(this.value);
                     });
                 }
 
