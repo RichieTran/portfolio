@@ -1075,6 +1075,16 @@ footer {
     z-index: 99999;
 }
 
+.blackScreen p {
+    color: #39FF14;
+    font-family: "W95";
+    font-size: 40px;
+    position: absolute;
+    bottom: 50%;
+    width: 100%;
+    text-align: center;
+}
+
 /* Explorer Items */
 .explorerItem{
     display: inline-flex;

@@ -223,6 +223,34 @@ document.addEventListener('DOMContentLoaded', function(){
                         const blackScreen = document.createElement('div');
                         blackScreen.className = 'blackScreen';
                         document.body.appendChild(blackScreen);
+                        const text = "Click any key to return to desktop";
+                        const p = document.createElement('p');
+                        blackScreen.appendChild(p);
+                        let i = 0;
+                        const interval = setInterval(() => {
+                            p.textContent += text[i];
+                            i++;
+                            if(i >= text.length){
+                                clearInterval(interval);
+                                let dots = 1;
+                                setInterval(() => {
+                                    p.textContent = text + '.'.repeat(dots);
+                                    dots = dots >= 3 ? 0 : dots + 1;
+                                }, 400);
+                            }
+                        }, 150);
+
+                        function dismissBlackScreen(){
+                            if(document.body.contains(blackScreen)){
+                                document.body.removeChild(blackScreen);
+                            }
+                            document.removeEventListener('keydown', dismissBlackScreen);
+                            document.removeEventListener('click', dismissBlackScreen);
+                        }
+                        setTimeout(function(){
+                            document.addEventListener('keydown', dismissBlackScreen);
+                            document.addEventListener('click', dismissBlackScreen);
+                        }, 0);
                     });
 
                     // Help does nothing
