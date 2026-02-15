@@ -1226,7 +1226,7 @@ document.addEventListener('DOMContentLoaded', function(){
                             </div>
                             <div class="mswStats">
                                 <span>⏱ <span id="mswTimer">0</span>s</span>
-                                <span><img src="images/bomb.jpg" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;"> <span id="mswMinesLeft">-</span></span>
+                                <span><img src="images/bomb.png" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;"> <span id="mswMinesLeft">-</span></span>
                             </div>
                             <div id="mswBoard"></div>
                             <div class="mswWinMsg" id="mswWinMsg"></div>
@@ -1357,7 +1357,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                     if(cd.mine){
                                         cell.classList.add('mine');
                                         const mineImg = document.createElement('img');
-                                        mineImg.src = cd.exploded ? 'images/explode.jpg' : 'images/bomb.jpg';
+                                        mineImg.src = cd.exploded ? 'images/explode.png' : 'images/bomb.png';
                                         mineImg.style.cssText = 'width:20px;height:20px;object-fit:contain;pointer-events:none;';
                                         cell.appendChild(mineImg);
                                     } else if(cd.adjCount > 0){
@@ -1437,7 +1437,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         renderBoard();
                         const winMsg = content.querySelector('#mswWinMsg');
                         const explodeImg = document.createElement('img');
-                        explodeImg.src = 'images/explode.jpg';
+                        explodeImg.src = 'images/explode.png';
                         explodeImg.style.cssText = 'width:16px;height:16px;object-fit:contain;vertical-align:middle;margin-right:4px;';
                         winMsg.innerHTML = '';
                         winMsg.appendChild(explodeImg);
@@ -1469,9 +1469,13 @@ document.addEventListener('DOMContentLoaded', function(){
                                 const res = await fetch(`${API}/scores`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ name, time_seconds: finalTime, difficulty: diff })
+                                    body: JSON.stringify({ name, time_seconds: Math.max(1, finalTime), difficulty: diff })
                                 }).then(r => r.json());
-                                winMsg.querySelector('#mswSubmitResult').textContent = res.qualified ? '🏆 Made the leaderboard!' : 'Didn\'t make top 10.';
+                                if(res.error) {
+                                    winMsg.querySelector('#mswSubmitResult').textContent = 'Error: ' + res.error;
+                                } else {
+                                    winMsg.querySelector('#mswSubmitResult').textContent = res.qualified ? 'Made the leaderboard!' : 'Didn\'t make top 10.';
+                                }
                             } catch(err) {
                                 winMsg.querySelector('#mswSubmitResult').textContent = 'Failed to submit.';
                             }
