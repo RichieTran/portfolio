@@ -1457,7 +1457,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         const secs = finalTime % 60;
                         const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-                        winMsg.innerHTML = `You won in ${timeStr}! <button class="settingsBtn button" id="mswSubmitScore">Submit Score</button> <span id="mswSubmitResult"></span>`;
+                        winMsg.innerHTML = `You won in ${timeStr}! <button class="settingsBtn button" id="mswSubmitScore">Submit Score</button> <span id="mswSubmitResult" style="font-size:11px;color:#555;">(may take a minute for backend to start)</span>`;
                         winMsg.style.color = '';
 
                         content.querySelector('#mswSubmitScore').addEventListener('click', async function(){
@@ -1471,10 +1471,13 @@ document.addEventListener('DOMContentLoaded', function(){
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ name, time_seconds: Math.max(1, finalTime), difficulty: diff })
                                 }).then(r => r.json());
+                                const resultEl = winMsg.querySelector('#mswSubmitResult');
+                                resultEl.style.color = '';
+                                resultEl.style.fontSize = '';
                                 if(res.error) {
-                                    winMsg.querySelector('#mswSubmitResult').textContent = 'Error: ' + res.error;
+                                    resultEl.textContent = 'Error: ' + res.error;
                                 } else {
-                                    winMsg.querySelector('#mswSubmitResult').textContent = res.qualified ? 'Made the leaderboard!' : 'Didn\'t make top 10.';
+                                    resultEl.textContent = res.qualified ? 'Made the leaderboard!' : 'Didn\'t make top 10.';
                                 }
                             } catch(err) {
                                 winMsg.querySelector('#mswSubmitResult').textContent = 'Failed to submit.';
