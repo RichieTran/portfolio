@@ -1205,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 if(app.id === "MineSweeper"){
                     win.classList.add('mineSweeperWindow');
                     win.style.width = '500px';
-                    win.style.height = '550px';
+                    win.style.height = '580px';
                     const content = win.querySelector('content');
                     content.innerHTML = `
                         <div class="settingsTabs">
@@ -1213,7 +1213,23 @@ document.addEventListener('DOMContentLoaded', function(){
                             <button class="settingsTab" data-tab="mswLeaderboard">Leaderboard</button>
                         </div>
                         <div class="settingsPanel" id="mswPlayPanel">
-                            <p>Play tab — game coming soon!</p>
+                            <div class="mswPlayControls">
+                                <label>Name: <input type="text" id="mswNameInput" maxlength="32" placeholder="Your name"></label>
+                                <label>Difficulty:
+                                    <select id="mswDiffSelect">
+                                        <option value="easy">Easy</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </label>
+                                <button class="settingsBtn button" id="mswNewGame">New Game</button>
+                            </div>
+                            <div class="mswStats">
+                                <span>⏱ <span id="mswTimer">0</span>s</span>
+                                <span><img src="images/bomb.jpg" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;"> <span id="mswMinesLeft">-</span></span>
+                            </div>
+                            <div id="mswBoard"></div>
+                            <div class="mswWinMsg" id="mswWinMsg"></div>
                         </div>
                         <div class="settingsPanel hidden" id="mswLeaderboardPanel">
                             <div class="mswLeaderboardControls">
@@ -1238,6 +1254,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                     const API = 'https://portfoliobackend-luv4.onrender.com';
 
+                    // --- Leaderboard ---
                     async function loadLeaderboard(difficulty) {
                         const tbody = content.querySelector('#mswLeaderboardBody');
                         tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
@@ -1259,6 +1276,234 @@ document.addEventListener('DOMContentLoaded', function(){
                         }
                     }
 
+                    // --- Game State ---
+                    const DIFFICULTIES = {
+                        easy:   { rows: 9,  cols: 9,  mines: 10 },
+                        medium: { rows: 16, cols: 16, mines: 40 },
+                        hard:   { rows: 16, cols: 30, mines: 99 }
+                    };
+                    let board = [], gameState = 'idle', firstClick = true;
+                    let timerInterval = null, seconds = 0, flagCount = 0;
+                    let curRows = 16, curCols = 16, curMines = 40;
+
+                    function initBoard(rows, cols) {
+                        board = [];
+                        for(let r = 0; r < rows; r++){
+                            board[r] = [];
+                            for(let c = 0; c < cols; c++){
+                                board[r][c] = { mine: false, revealed: false, flagged: false, adjCount: 0 };
+                            }
+                        }
+                    }
+
+                    function placeMines(rows, cols, mineCount, safeR, safeC) {
+                        let placed = 0;
+                        while(placed < mineCount){
+                            const r = Math.floor(Math.random() * rows);
+                            const c = Math.floor(Math.random() * cols);
+                            if(!board[r][c].mine && !(r === safeR && c === safeC)){
+                                board[r][c].mine = true;
+                                placed++;
+                            }
+                        }
+                        for(let r = 0; r < rows; r++){
+                            for(let c = 0; c < cols; c++){
+                                if(board[r][c].mine) continue;
+                                let count = 0;
+                                for(let dr = -1; dr <= 1; dr++) for(let dc = -1; dc <= 1; dc++){
+                                    const nr = r+dr, nc = c+dc;
+                                    if(nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc].mine) count++;
+                                }
+                                board[r][c].adjCount = count;
+                            }
+                        }
+                    }
+
+                    function startTimer() {
+                        seconds = 0;
+                        content.querySelector('#mswTimer').textContent = '0';
+                        timerInterval = setInterval(() => {
+                            seconds++;
+                            content.querySelector('#mswTimer').textContent = seconds;
+                        }, 1000);
+                    }
+
+                    function stopTimer() {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+
+                    function updateMinesLeft() {
+                        content.querySelector('#mswMinesLeft').textContent = curMines - flagCount;
+                    }
+
+                    const numColors = ['','#0000FF','#008000','#FF0000','#000080','#800000','#008080','#000000','#808080'];
+
+                    function renderBoard() {
+                        const boardEl = content.querySelector('#mswBoard');
+                        boardEl.innerHTML = '';
+                        const grid = document.createElement('div');
+                        grid.className = 'mswGrid';
+                        grid.style.gridTemplateColumns = `repeat(${curCols}, 24px)`;
+                        for(let r = 0; r < curRows; r++){
+                            for(let c = 0; c < curCols; c++){
+                                const cell = document.createElement('div');
+                                cell.className = 'mswCell';
+                                cell.dataset.r = r;
+                                cell.dataset.c = c;
+                                const cd = board[r][c];
+                                if(cd.revealed){
+                                    cell.classList.add('revealed');
+                                    if(cd.mine){
+                                        cell.classList.add('mine');
+                                        const mineImg = document.createElement('img');
+                                        mineImg.src = cd.exploded ? 'images/explode.jpg' : 'images/bomb.jpg';
+                                        mineImg.style.cssText = 'width:20px;height:20px;object-fit:contain;pointer-events:none;';
+                                        cell.appendChild(mineImg);
+                                    } else if(cd.adjCount > 0){
+                                        cell.textContent = cd.adjCount;
+                                        cell.style.color = numColors[cd.adjCount];
+                                    }
+                                } else if(cd.flagged){
+                                    cell.textContent = '🚩';
+                                }
+                                grid.appendChild(cell);
+                            }
+                        }
+                        boardEl.appendChild(grid);
+
+                        grid.addEventListener('click', function(e){
+                            if(gameState !== 'idle' && gameState !== 'playing') return;
+                            const cell = e.target.closest('.mswCell');
+                            if(!cell) return;
+                            const r = parseInt(cell.dataset.r), c = parseInt(cell.dataset.c);
+                            if(board[r][c].flagged || board[r][c].revealed) return;
+                            if(firstClick){
+                                firstClick = false;
+                                placeMines(curRows, curCols, curMines, r, c);
+                                gameState = 'playing';
+                                startTimer();
+                            }
+                            revealCell(r, c);
+                            if(board[r][c].mine){
+                                handleLoss(r, c);
+                            } else {
+                                renderBoard();
+                                if(checkWin()) handleWin();
+                            }
+                        });
+
+                        grid.addEventListener('contextmenu', function(e){
+                            e.preventDefault();
+                            if(gameState !== 'playing') return;
+                            const cell = e.target.closest('.mswCell');
+                            if(!cell) return;
+                            const r = parseInt(cell.dataset.r), c = parseInt(cell.dataset.c);
+                            if(board[r][c].revealed) return;
+                            board[r][c].flagged = !board[r][c].flagged;
+                            flagCount += board[r][c].flagged ? 1 : -1;
+                            updateMinesLeft();
+                            renderBoard();
+                        });
+                    }
+
+                    function revealCell(r, c) {
+                        if(r < 0 || r >= curRows || c < 0 || c >= curCols) return;
+                        if(board[r][c].revealed || board[r][c].flagged) return;
+                        board[r][c].revealed = true;
+                        if(board[r][c].adjCount === 0 && !board[r][c].mine){
+                            for(let dr = -1; dr <= 1; dr++) for(let dc = -1; dc <= 1; dc++){
+                                revealCell(r+dr, c+dc);
+                            }
+                        }
+                    }
+
+                    function checkWin() {
+                        for(let r = 0; r < curRows; r++)
+                            for(let c = 0; c < curCols; c++)
+                                if(!board[r][c].mine && !board[r][c].revealed) return false;
+                        return true;
+                    }
+
+                    function handleLoss(hitR, hitC) {
+                        stopTimer();
+                        gameState = 'lost';
+                        for(let r = 0; r < curRows; r++)
+                            for(let c = 0; c < curCols; c++)
+                                if(board[r][c].mine){
+                                    board[r][c].revealed = true;
+                                    board[r][c].exploded = (r === hitR && c === hitC);
+                                }
+                        renderBoard();
+                        const winMsg = content.querySelector('#mswWinMsg');
+                        const explodeImg = document.createElement('img');
+                        explodeImg.src = 'images/explode.jpg';
+                        explodeImg.style.cssText = 'width:16px;height:16px;object-fit:contain;vertical-align:middle;margin-right:4px;';
+                        winMsg.innerHTML = '';
+                        winMsg.appendChild(explodeImg);
+                        winMsg.append('Game over! Click New Game to try again.');
+                        winMsg.style.color = '#cc0000';
+                    }
+
+                    async function handleWin() {
+                        stopTimer();
+                        gameState = 'won';
+                        const finalTime = seconds;
+                        const diff = content.querySelector('#mswDiffSelect').value;
+                        const nameInput = content.querySelector('#mswNameInput');
+                        const winMsg = content.querySelector('#mswWinMsg');
+
+                        const mins = Math.floor(finalTime / 60);
+                        const secs = finalTime % 60;
+                        const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+                        winMsg.innerHTML = `You won in ${timeStr}! <button class="settingsBtn button" id="mswSubmitScore">Submit Score</button> <span id="mswSubmitResult"></span>`;
+                        winMsg.style.color = '';
+
+                        content.querySelector('#mswSubmitScore').addEventListener('click', async function(){
+                            const name = nameInput.value.trim();
+                            if(!name){ winMsg.querySelector('#mswSubmitResult').textContent = 'Enter a name first!'; return; }
+                            this.disabled = true;
+                            this.textContent = 'Submitting...';
+                            try {
+                                const res = await fetch(`${API}/scores`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ name, time_seconds: finalTime, difficulty: diff })
+                                }).then(r => r.json());
+                                winMsg.querySelector('#mswSubmitResult').textContent = res.qualified ? '🏆 Made the leaderboard!' : 'Didn\'t make top 10.';
+                            } catch(err) {
+                                winMsg.querySelector('#mswSubmitResult').textContent = 'Failed to submit.';
+                            }
+                            this.remove();
+                        });
+                    }
+
+                    // --- New Game button ---
+                    content.querySelector('#mswNewGame').addEventListener('click', function(){
+                        const diff = content.querySelector('#mswDiffSelect').value;
+                        const cfg = DIFFICULTIES[diff];
+                        curRows = cfg.rows; curCols = cfg.cols; curMines = cfg.mines;
+                        // Resize window to fit grid exactly
+                        // Cell: 24px + 1px gap = 25px per cell, grid border: 4px
+                        // Content padding: 16px, panel padding: 30px, window border: 4px
+                        // Height extras: header 35px, tabs 32px, controls 100px, stats 28px, winmsg 28px
+                        const gridW = curCols * 25 + 3;
+                        const gridH = curRows * 25 + 3;
+                        win.style.width  = (gridW + 70) + 'px';
+                        win.style.height = (gridH + 285) + 'px';
+                        stopTimer();
+                        flagCount = 0;
+                        firstClick = true;
+                        gameState = 'idle';
+                        content.querySelector('#mswTimer').textContent = '0';
+                        content.querySelector('#mswWinMsg').textContent = '';
+                        updateMinesLeft();
+                        initBoard(curRows, curCols);
+                        renderBoard();
+                    });
+
+                    // --- Tab switching ---
                     content.querySelectorAll('.settingsTab').forEach(function(tab){
                         tab.addEventListener('click', function(e){
                             e.stopPropagation();
