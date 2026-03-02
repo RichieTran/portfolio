@@ -108,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function(){
                     projectsSubmenu.className = 'submenu';
                     projectsSubmenu.innerHTML = `
                         <div class="submenuContent">
+                            <button class="menuItem button" id="menuStoryScroll">
+                                <img src="images/storyScroll/storyScroll.png" alt="">StoryScroll
+                            </button>
                             <button class="menuItem button" id="menuMoodMovie">
                                 <img src="images/MoodMovie/moodMovie.png" alt="">MoodMovie
                             </button>
@@ -129,6 +132,13 @@ document.addEventListener('DOMContentLoaded', function(){
                     projectsSubmenu.style.bottom = (window.innerHeight - rect.bottom) + 'px';
 
                     document.body.appendChild(projectsSubmenu);
+
+                    projectsSubmenu.querySelector('#menuStoryScroll').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openStoryScrollWindow();
+                        bringWindowToFront('StoryScrollWindow', 'StoryScrollTaskbarItem');
+                    });
 
                     projectsSubmenu.querySelector('#menuMoodMovie').addEventListener('click', function(e){
                         e.stopPropagation();
@@ -813,6 +823,96 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 
+    function openStoryScrollWindow(){
+        if(document.getElementById('StoryScrollWindow')) return;
+
+        const win = document.createElement('span');
+        win.id = 'StoryScrollWindow';
+        win.className = 'window';
+
+        const maxX = Math.max(0, window.innerWidth - 750);
+        const maxY = Math.max(0, window.innerHeight - 525);
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        win.style.width = '750px';
+        win.style.height = '525px';
+        win.style.left = randomX + 'px';
+        win.style.top = randomY + 'px';
+
+        win.innerHTML = `
+            <header id="windowHeader">
+                <icon><img class="appImg" src="images/storyScroll/storyScroll.png" alt="StoryScroll"></icon>
+                <p>StoryScroll</p>
+                <close></close>
+            </header>
+            <content>
+                <div class="projectContainer">
+                    <p class="projectDesc">I've recently been interested in automating content creation. The idea of building a pipeline that takes raw input and produces something polished and shareable is really cool to me. I thought a good place to start was to combine it with the Reddit stories trend, where people narrate posts over gameplay footage, and build something that does it all automatically. That's what led me to create StoryScroll. (Dont mind the icons, I just asked Claude to generate them for me)</p>
+                    <img class="projectImg" src="images/storyScroll/storyScroll2.png" alt="StoryScroll Screenshot 1">
+                    <p class="projectDesc">StoryScroll is a video generation pipeline built with React, FastAPI, FFmpeg, ElevenLabs API, and Cloudflare R2. It scrapes Reddit stories, narrates them using ElevenLabs TTS with selectable voices, and composites the audio over background footage using FFmpeg to produce short-form video content ready for social media.</p>
+                    <img class="projectImg" src="images/storyScroll/storyScroll3.png" alt="StoryScroll Screenshot 2">
+                    <p class="projectDesc">One of the more interesting engineering challenges was designing an asynchronous job queue with real-time progress polling so multiple videos could be processed concurrently without blocking the frontend. Background videos are stored in Cloudflare R2 for scalable delivery, and the pipeline handles acronym normalization so TTS reads them naturally.</p>
+                    <img class="projectImg" src="images/storyScroll/storyScroll4.png" alt="StoryScroll Screenshot 3">
+                    <div class="projectBottom">
+                        <p class="projectDesc">Check out the live site: <a href="https://story-scroll-pi.vercel.app/" target="_blank">here</a>!</p>
+                        <a class="projectGithub button" href="https://github.com/RichieTran/storyScroll" target="_blank">
+                            <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
+                        </a>
+                    </div>
+                </div>
+            </content>
+        `;
+
+        document.body.appendChild(win);
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+
+        if(lastOpened){
+            lastOpened.classList.add('background');
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
+        }
+        lastOpened = win;
+
+        const taskbarItems = document.getElementById('taskbarItems');
+        const taskbarItem = document.createElement('button');
+        taskbarItem.className = 'taskbarItem active';
+        taskbarItem.id = 'StoryScrollTaskbarItem';
+        taskbarItem.innerHTML = '<img class="appImg" src="images/storyScroll/storyScroll.png" alt=""><span>StoryScroll</span>';
+
+        taskbarItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            if(win.classList.contains('background')){
+                if(lastOpened){
+                    lastOpened.classList.add('background');
+                    const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lt) lt.classList.remove('active');
+                }
+                win.classList.remove('background');
+                taskbarItem.classList.add('active');
+                lastOpened = win;
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+            }
+        });
+
+        taskbarItems.appendChild(taskbarItem);
+        dragElement(win);
+
+        const closeBtn = win.querySelector('close');
+        closeBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            win.remove();
+            taskbarItem.remove();
+            if(lastOpened === win){
+                lastOpened = null;
+            }
+        });
+    }
+
     function openMoodMovieWindow(){
         if(document.getElementById('MoodMovieWindow')) return;
 
@@ -995,6 +1095,10 @@ document.addEventListener('DOMContentLoaded', function(){
                             <span class="explorerMenuItem"><u>H</u>elp</span>
                         </div>
                         <div class="explorerContent">
+                            <span class="explorerItem" id="StoryScrollItem">
+                                <img src="images/storyScroll/storyScroll.png" alt="StoryScroll">
+                                <p>StoryScroll</p>
+                            </span>
                             <span class="explorerItem" id="MyEyesItem">
                                 <img src="images/MyEyes/MyEyes.png" alt="MyEyes">
                                 <p>MyEyes</p>
@@ -1013,7 +1117,7 @@ document.addEventListener('DOMContentLoaded', function(){
                             </span>
                         </div>
                         <div class="explorerStatusBar">
-                            <span class="statusLeft">4 object(s)</span>
+                            <span class="statusLeft">5 object(s)</span>
                             <span class="statusRight"></span>
                         </div>
                     `;
@@ -1055,6 +1159,11 @@ document.addEventListener('DOMContentLoaded', function(){
                             e.stopPropagation();
                             openMoodMovieWindow();
                             bringWindowToFront('MoodMovieWindow', 'MoodMovieTaskbarItem');
+                        }
+                        if(item && item.id === 'StoryScrollItem'){
+                            e.stopPropagation();
+                            openStoryScrollWindow();
+                            bringWindowToFront('StoryScrollWindow', 'StoryScrollTaskbarItem');
                         }
                     });
                 }
@@ -1528,6 +1637,28 @@ document.addEventListener('DOMContentLoaded', function(){
                     content.querySelector('#mswDifficultySelect').addEventListener('change', function(){
                         loadLeaderboard(this.value);
                     });
+                }
+
+                if(app.id === "ScrollStory"){
+                    win.style.width = '750px';
+                    win.style.height = '525px';
+                    const content = win.querySelector('content');
+                    content.innerHTML = `
+                        <div class="projectContainer">
+                            <p class="projectDesc">I've always been interested in automated content creation — the idea of building a pipeline that takes raw input and produces something polished and shareable sounds really exciting. I thought it'd be cool to combine that with the Reddit stories trend, where people narrate posts over gameplay footage, and build something that does it all automatically. That's what led me to create StoryScroll.</p>
+                            <img class="projectImg" src="images/storyScroll/storyScroll2.png" alt="StoryScroll Screenshot 1">
+                            <p class="projectDesc">StoryScroll is a full-stack video generation pipeline built with React, FastAPI, FFmpeg, ElevenLabs API, and Cloudflare R2. It scrapes Reddit stories, narrates them using ElevenLabs TTS with selectable voices, and composites the audio over background footage using FFmpeg to produce short-form video content.</p>
+                            <img class="projectImg" src="images/storyScroll/storyScroll3.png" alt="StoryScroll Screenshot 2">
+                            <p class="projectDesc">One of the more interesting engineering challenges was designing an asynchronous job queue with real-time progress polling so multiple videos could be processed concurrently without blocking the frontend. Background videos are stored in Cloudflare R2 for scalable delivery, and the pipeline handles acronym normalization so TTS reads them naturally.</p>
+                            <img class="projectImg" src="images/storyScroll/storyScroll4.png" alt="StoryScroll Screenshot 3">
+                            <div class="projectBottom">
+                                <p class="projectDesc">Check out the live site: <a href="https://story-scroll-pi.vercel.app/" target="_blank">here</a>!</p>
+                                <a class="projectGithub button" href="https://github.com/RichieTran/storyScroll" target="_blank">
+                                    <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
+                                </a>
+                            </div>
+                        </div>
+                    `;
                 }
 
                 document.body.appendChild(win);

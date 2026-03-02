@@ -1222,6 +1222,15 @@ footer {
     overflow: hidden;
 }
 
+#StoryScrollWindow{
+    grid-template-rows: 35px 1fr;
+}
+
+#StoryScrollWindow content{
+    display: flex;
+    overflow: hidden;
+}
+
 /* MineSweeper Window */
 .mineSweeperWindow{
     grid-template-rows: 35px 1fr;
