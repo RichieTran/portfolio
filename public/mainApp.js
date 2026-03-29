@@ -1462,7 +1462,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         </div>
                     `;
 
-                    const API = 'https://portfoliobackend-luv4.onrender.com';
+                    const API = 'https://backend-seven-sable-38.vercel.app';
 
                     // --- Leaderboard ---
                     async function loadLeaderboard(difficulty) {
