@@ -123,6 +123,9 @@ document.addEventListener('DOMContentLoaded', function(){
                             <button class="menuItem button" id="menuMyEyes">
                                 <img src="images/MyEyes/MyEyes.png" alt="">MyEyes
                             </button>
+                            <button class="menuItem button" id="menuQuizzr">
+                                <img src="images/quizzr.png" alt="">Quizzr
+                            </button>
                         </div>
                     `;
 
@@ -166,6 +169,13 @@ document.addEventListener('DOMContentLoaded', function(){
                         closeStartMenu();
                         openMyEyesWindow();
                         bringWindowToFront('MyEyesWindow', 'MyEyesTaskbarItem');
+                    });
+
+                    projectsSubmenu.querySelector('#menuQuizzr').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openQuizzrWindow();
+                        bringWindowToFront('QuizzrWindow', 'QuizzrTaskbarItem');
                     });
                 }
             });
@@ -823,6 +833,88 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 
+    function openQuizzrWindow(){
+        if(document.getElementById('QuizzrWindow')) return;
+
+        const win = document.createElement('span');
+        win.id = 'QuizzrWindow';
+        win.className = 'window';
+
+        const maxX = Math.max(0, window.innerWidth - 480);
+        const maxY = Math.max(0, window.innerHeight - 220);
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        win.style.width = '480px';
+        win.style.height = '220px';
+        win.style.left = randomX + 'px';
+        win.style.top = randomY + 'px';
+
+        win.innerHTML = `
+            <header id="windowHeader">
+                <icon><img class="appImg" src="images/PlaceHolder.png" alt="Quizzr"></icon>
+                <p>Quizzr</p>
+                <close></close>
+            </header>
+            <content>
+                <div class="projectContainer">
+                    <p class="projectDesc">I wanted to create a simple CLI quiz app to test using a multi-agent structured system. I had one agent responsible for building the app, another for running tests and providing feedback, and a final agent to apply updates based on that feedback. It was a fun experiment in orchestrating agents to collaborate on a small project end-to-end. Check out the outcome at the repo below!</p>
+                    <a class="projectGithub button" href="https://github.com/RichieTran/quizApp" target="_blank">
+                        <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
+                    </a>
+                </div>
+            </content>
+        `;
+
+        document.body.appendChild(win);
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+
+        if(lastOpened){
+            lastOpened.classList.add('background');
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
+        }
+        lastOpened = win;
+
+        const taskbarItems = document.getElementById('taskbarItems');
+        const taskbarItem = document.createElement('button');
+        taskbarItem.className = 'taskbarItem active';
+        taskbarItem.id = 'QuizzrTaskbarItem';
+        taskbarItem.innerHTML = '<img class="appImg" src="images/PlaceHolder.png" alt=""><span>Quizzr</span>';
+
+        taskbarItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            if(win.classList.contains('background')){
+                if(lastOpened){
+                    lastOpened.classList.add('background');
+                    const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lt) lt.classList.remove('active');
+                }
+                win.classList.remove('background');
+                taskbarItem.classList.add('active');
+                lastOpened = win;
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+            }
+        });
+
+        taskbarItems.appendChild(taskbarItem);
+        dragElement(win);
+
+        const closeBtn = win.querySelector('close');
+        closeBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            win.remove();
+            taskbarItem.remove();
+            if(lastOpened === win){
+                lastOpened = null;
+            }
+        });
+    }
+
     function openStoryScrollWindow(){
         if(document.getElementById('StoryScrollWindow')) return;
 
@@ -1115,9 +1207,13 @@ document.addEventListener('DOMContentLoaded', function(){
                                 <img src="images/CrossyRoad.png" alt="Crossy Road">
                                 <p>Crossy Road</p>
                             </span>
+                            <span class="explorerItem" id="QuizzrItem">
+                                <img src="images/quizzr.png" alt="Quizzr">
+                                <p>Quizzr</p>
+                            </span>
                         </div>
                         <div class="explorerStatusBar">
-                            <span class="statusLeft">5 object(s)</span>
+                            <span class="statusLeft">6 object(s)</span>
                             <span class="statusRight"></span>
                         </div>
                     `;
@@ -1164,6 +1260,11 @@ document.addEventListener('DOMContentLoaded', function(){
                             e.stopPropagation();
                             openStoryScrollWindow();
                             bringWindowToFront('StoryScrollWindow', 'StoryScrollTaskbarItem');
+                        }
+                        if(item && item.id === 'QuizzrItem'){
+                            e.stopPropagation();
+                            openQuizzrWindow();
+                            bringWindowToFront('QuizzrWindow', 'QuizzrTaskbarItem');
                         }
                     });
                 }
