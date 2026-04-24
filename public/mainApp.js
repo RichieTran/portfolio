@@ -126,6 +126,9 @@ document.addEventListener('DOMContentLoaded', function(){
                             <button class="menuItem button" id="menuQuizzr">
                                 <img src="images/quizzr.png" alt="">Quizzr
                             </button>
+                            <button class="menuItem button" id="menuMarginote">
+                                <img src="images/Marginote/marginote.webp" alt="">Marginote
+                            </button>
                         </div>
                     `;
 
@@ -176,6 +179,13 @@ document.addEventListener('DOMContentLoaded', function(){
                         closeStartMenu();
                         openQuizzrWindow();
                         bringWindowToFront('QuizzrWindow', 'QuizzrTaskbarItem');
+                    });
+
+                    projectsSubmenu.querySelector('#menuMarginote').addEventListener('click', function(e){
+                        e.stopPropagation();
+                        closeStartMenu();
+                        openMarginoteWindow();
+                        bringWindowToFront('MarginoteWindow', 'MarginoteTaskbarItem');
                     });
                 }
             });
@@ -915,6 +925,99 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 
+    function openMarginoteWindow(){
+        if(document.getElementById('MarginoteWindow')) return;
+
+        const win = document.createElement('span');
+        win.id = 'MarginoteWindow';
+        win.className = 'window';
+
+        const maxX = Math.max(0, window.innerWidth - 750);
+        const maxY = Math.max(0, window.innerHeight - 525);
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        win.style.width = '750px';
+        win.style.height = '525px';
+        win.style.left = randomX + 'px';
+        win.style.top = randomY + 'px'; 
+
+        win.innerHTML = `
+            <header id="windowHeader">
+                <icon><img class="appImg" src="images/Marginote/marginote.webp" alt="Marginote"></icon>
+                <p>Marginote</p>
+                <close></close>
+            </header>
+            <content>
+                <div class="projectContainer">
+                    <p class="projectDesc">For my capstone project for 15-113, I wanted to create something that I had no experience with. So I decided to create a google chrome extension! Marginote keeps track of highlights from whatever websites you choose to keep annotations along with notes for each annotation. You can split your annotations into groups and subgroups for more organization. Your highlights will stay on the site for when you ever return to it, and in the dashboard you can jump to that page. I think this project was complex enough that it wasn't trivial, but also easy enough to where it was useful to learn the basics of creating google chrome extensions.</p>
+                    <img class="projectImg" src="images/Marginote/Marginote1.png" alt="MyEyes Screenshot 1">
+                    <p class="projectDesc">Pop up when hovering over text that may want to be highlighted</p>
+                    <img class="projectImg" src="images/Marginote/Marginote2.png" alt="MyEyes Screenshot 2">
+                    <p class="projectDesc">Highlights in a "poker" group on the poker wikipedia page</p>
+                    <img class="projectImg" src="images/Marginote/Marginote3.png" alt="MyEyes Screenshot 3">
+                    <p class="projectDesc">Highlights in a "research" group with notes</p>
+                    <img class="projectImg" src="images/Marginote/Marginote4.png" alt="MyEyes Screenshot 4">
+                    <p class="projectDesc">Pop up that appears when clicking the extension</p>
+                    <img class="projectImg" src="images/Marginote/Marginote5.png" alt="MyEyes Screenshot 5">
+                    <p class="projectDesc">Dashboard that shows all groups and annotations</p>
+                    <p> Check back another time and maybe the extension will be posted to the Google store! You can find the code at the repo below!</p>
+                    <a class="projectGithub button" href="https://github.com/RichieTran/marginote" target="_blank">
+                        <img src="images/GitHubLogo.png" alt="GitHub"> GH Repo
+                    </a>
+                </div>
+            </content>
+        `;
+
+        document.body.appendChild(win);
+        win.style.zIndex = zLevel;
+        zLevel += 1;
+
+        if(lastOpened){
+            lastOpened.classList.add('background');
+            const lastTaskbarItem = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+            if(lastTaskbarItem){
+                lastTaskbarItem.classList.remove('active');
+            }
+        }
+        lastOpened = win;
+
+        const taskbarItems = document.getElementById('taskbarItems');
+        const taskbarItem = document.createElement('button');
+        taskbarItem.className = 'taskbarItem active';
+        taskbarItem.id = 'MarginoteTaskbarItem';
+        taskbarItem.innerHTML = '<img class="appImg" src="images/Marginote/marginote.webp" alt=""><span>Marginote</span>';
+
+        taskbarItem.addEventListener('click', function(e){
+            e.stopPropagation();
+            if(win.classList.contains('background')){
+                if(lastOpened){
+                    lastOpened.classList.add('background');
+                    const lt = document.getElementById(lastOpened.id.replace('Window', 'TaskbarItem'));
+                    if(lt) lt.classList.remove('active');
+                }
+                win.classList.remove('background');
+                taskbarItem.classList.add('active');
+                lastOpened = win;
+                win.style.zIndex = zLevel;
+                zLevel += 1;
+            }
+        });
+
+        taskbarItems.appendChild(taskbarItem);
+        dragElement(win);
+
+        const closeBtn = win.querySelector('close');
+        closeBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            win.remove();
+            taskbarItem.remove();
+            if(lastOpened === win){
+                lastOpened = null;
+            }
+        });
+    }
+
     function openStoryScrollWindow(){
         if(document.getElementById('StoryScrollWindow')) return;
 
@@ -1211,9 +1314,13 @@ document.addEventListener('DOMContentLoaded', function(){
                                 <img src="images/quizzr.png" alt="Quizzr">
                                 <p>Quizzr</p>
                             </span>
+                            <span class="explorerItem" id="MarginoteItem">
+                                <img src="images/Marginote/marginote.webp" alt="Marginote">
+                                <p>Marginote</p>
+                            </span>
                         </div>
                         <div class="explorerStatusBar">
-                            <span class="statusLeft">6 object(s)</span>
+                            <span class="statusLeft">7 object(s)</span>
                             <span class="statusRight"></span>
                         </div>
                     `;
@@ -1265,6 +1372,11 @@ document.addEventListener('DOMContentLoaded', function(){
                             e.stopPropagation();
                             openQuizzrWindow();
                             bringWindowToFront('QuizzrWindow', 'QuizzrTaskbarItem');
+                        }
+                        if(item && item.id === 'MarginoteItem'){
+                            e.stopPropagation();
+                            openMarginoteWindow();
+                            bringWindowToFront('MarginoteWindow', 'MarginoteTaskbarItem');
                         }
                     });
                 }

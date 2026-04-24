@@ -1212,6 +1212,16 @@ footer {
     overflow: hidden;
 }
 
+/* Marginote Window */
+#MarginoteWindow{
+    grid-template-rows: 35px 1fr;
+}
+
+#MarginoteWindow content{
+    display: flex;
+    overflow: hidden;
+}
+
 /* MoodMovie Window */
 #MoodMovieWindow{
     grid-template-rows: 35px 1fr;
